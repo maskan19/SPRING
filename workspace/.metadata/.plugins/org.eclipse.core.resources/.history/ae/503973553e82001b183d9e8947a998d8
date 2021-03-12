@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+(웹 리소스)
+http://localhost/dummy01/01/dummy.html
+</body>
+<script type="text/javascript" src="../js/dummy.js">
+<h4>server time : <%=new Date()%></h4>
+</script>
+</html>

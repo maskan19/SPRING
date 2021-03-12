@@ -1,0 +1,30 @@
+package kr.or.ddit;
+
+import javax.servlet.http.*;
+import javax.servlet.*;
+import java.io.*;
+import java.util.*;
+//한글 주석
+public class ImageFormServlet extends HttpServlet{
+	protected void doGet(HttpServletRequest req,
+                     HttpServletResponse resp)
+              throws ServletException,
+                     IOException{
+		
+		resp.setContentType("text/html; charset=UTF-8");
+		String folder = "d:/contents";
+		File contents = new File(folder);
+		String[] children = contents.list();
+		StringBuffer html = new StringBuffer("<html><body>"); 
+				
+		html.append("<form action='image.do'><select name='image'>");
+		for (String child : children){
+			html.append("<option value='" + child +"'>" + child + "</option>");
+		}
+		html.append("</select><input type='submit' value='전송'></input></form></body></html>");
+		//PrintWriter out = resp.getWriter();
+		//out.println(html);
+		resp.getWriter().print(html);
+		
+	}
+}		

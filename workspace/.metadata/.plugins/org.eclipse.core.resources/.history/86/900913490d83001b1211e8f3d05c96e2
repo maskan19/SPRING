@@ -1,0 +1,5 @@
+<h4></h4>
+<select id='textFile'>
+%options%
+</select>
+<iframe id="viewer"></iframe>
