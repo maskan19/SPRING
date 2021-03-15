@@ -12,4 +12,6 @@
 <fullyQualifiedTypeName name="javax.servlet.annotation.WebInitParam"/>
 <fullyQualifiedTypeName name="kr.or.ddit.servlet01.DescriptionServlet"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="kr.or.ddit.designpattern.TemplateMethodPatternTest"/>
+<fullyQualifiedTypeName name="kr.or.ddit.designpattern.templatemethodpattern.TemplateClass"/>
 </qualifiedTypeNameHistroy>
