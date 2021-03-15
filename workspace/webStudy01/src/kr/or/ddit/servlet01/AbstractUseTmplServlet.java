@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 //template method pattern
 public abstract class AbstractUseTmplServlet extends HttpServlet {
 	protected ServletContext application;
@@ -24,7 +25,7 @@ public abstract class AbstractUseTmplServlet extends HttpServlet {
 		super.init(config);
 		application = config.getServletContext();
 	}
-	
+
 //	template method
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
