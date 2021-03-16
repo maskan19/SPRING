@@ -43,9 +43,6 @@ import javax.servlet.http.HttpServletResponse;
  *  
  *  		** ServletConfig : 서블릿의 메타 정보를 캡슐화한 객체
  *  
- *  
- *  
- *  
  */
 
 //@WebServlet(loadOnStartup=1, value="/desc.do", initParams = {@WebInitParam(name="paramName", value="paramValue")})
