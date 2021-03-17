@@ -47,7 +47,7 @@ $(function() {
 
 <body>
 <h4><%=new Date() %></h4>
-    <form action="../02/image.do">
+    <form action="../01/image.do">
     <%
     String folder = "d:/contents";
 	File contents = new File(folder);

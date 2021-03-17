@@ -30,8 +30,6 @@ import javax.servlet.http.HttpServletResponse;
  * 2. Request Header :  meta data 영역
  * 		Accept, Content-Type, User-Agent
  * 3. Request Body(only POST : 서버로 전송할 컨텐츠
- *  
- *
  *
  */
 @WebServlet("/requestDesc.do")
