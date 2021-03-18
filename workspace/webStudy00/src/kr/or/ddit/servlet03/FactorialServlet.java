@@ -1,6 +1,7 @@
 package kr.or.ddit.servlet03;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,17 +9,92 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/03/factorial")
-public class FactorialServlet extends HttpServlet {
+import kr.or.ddit.enumpkg.FactorialType;
+import kr.or.ddit.enumpkg.MimeType;
+import kr.or.ddit.servlet03.view.JsonView;
+import kr.or.ddit.servlet03.view.XmlView;
+import kr.or.ddit.vo.FactorialVO;
 
+@WebServlet("/03/factorial")
+public class FactorialServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		return "/factorialForm.jsp";
+		String view = "/WEB-INF/views/factorialForm.jsp";
+		req.getRequestDispatcher(view).forward(req, resp);
 	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// number받아와서 연산
-		super.doPost(req, resp);
+		req.setCharacterEncoding("UTF-8");
+//		요청 분석(검증)
+		int status = bindAndValidate(req);
+		if(status!=HttpServletResponse.SC_OK) {
+			resp.sendError(status);
+			return;
+		}
+//		연산
+		FactorialVO vo = (FactorialVO) req.getAttribute("vo");
+		FactorialType factorial = vo.getFactorial();
+		String expr = factorial.expression(vo);
+		vo.setExpression(expr);
+		
+//		응답 전송
+		String accept = req.getHeader("accept");
+		MimeType mimeType = MimeType.searchMimeType(accept);
+		resp.setContentType(mimeType.getMime());
+		
+		StringBuffer respData = new StringBuffer();
+		String view = null;
+		
+		switch (mimeType) {
+		case JSON:
+			new JsonView().mergeModelAndView(vo, resp);
+			break;
+		case XML:
+			new XmlView().mergeModelAndView(vo, resp);
+			break;
+		case PLAIN:
+			respData.append(expr);
+			break;
+		default:
+			view = "/WEB-INF/views/factorialForm.jsp";
+			break;
+		}
+		if(view!=null) {
+			req.getRequestDispatcher(view).forward(req, resp);
+		}else {
+			try (
+					PrintWriter out = resp.getWriter();
+					){
+				out.print(respData);
+			}
+		}
+		
 	}
+
+	private int bindAndValidate(HttpServletRequest req) {
+		int status = HttpServletResponse.SC_OK;
+		String singleParam = req.getParameter("single");
+		String factorialParam = req.getParameter("factorial");
+		int single = 0;
+		FactorialType factorial = null;
+		if(singleParam==null || factorialParam==null) {
+			status = HttpServletResponse.SC_BAD_REQUEST;
+		}else {
+			try {
+				single = Integer.parseInt(singleParam);
+				factorial = FactorialType.valueOf(factorialParam.toUpperCase());
+			} catch (IllegalArgumentException e) {
+				status = HttpServletResponse.SC_BAD_REQUEST;
+			}
+		}
+		
+		if(status==HttpServletResponse.SC_OK) {
+			FactorialVO vo = new FactorialVO(single, factorial);
+			req.setAttribute("vo", vo);
+		}
+		
+		return status;
+	}
+	
 }
