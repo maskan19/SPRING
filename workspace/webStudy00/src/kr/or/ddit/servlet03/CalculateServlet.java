@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.or.ddit.enumpkg.MimeType;
 import kr.or.ddit.enumpkg.OperatorType;
+import kr.or.ddit.servlet03.view.JsonView;
+import kr.or.ddit.servlet03.view.XmlView;
 import kr.or.ddit.vo.CalculatorVO;
 
 @WebServlet("/03/calculator2")
@@ -31,39 +33,41 @@ public class CalculateServlet extends HttpServlet {
 		OperatorType operator = vo.getOperator();
 		double result = operator.operate(vo.getLeft(), vo.getRight());
 		String expr = operator.expression(vo);
+		vo.setResult(result);
+		vo.setExpression(expr);
 //		응답 전송 try with(){}로 리소스 자동 회수
 		String accept = req.getHeader("accept");
-		
-		
+
 		MimeType mime = MimeType.searchMimeType(accept);
 		resp.setContentType(mime.getMime());
-		
+
 		StringBuffer respData = new StringBuffer();
-		
-		switch(mime) {//마샬링
+		String view = null;
+
+		switch (mime) {// 마샬링
 		case JSON:
-			respData.append(String.format("{\"result\" : \"%s\"}", expr));
+//			respData.append(String.format("{\"result\" : \"%s\"}", expr));
+		new JsonView().mergeModelAndView(vo, resp);
 			break;
 		case XML:
-			respData.append(String.format("<result>%s</result>", expr));
+//			respData.append(String.format("<result>%s</result>", expr));
+			new XmlView().mergeModelAndView(vo, resp);
 			break;
 		case PLAIN:
 			respData.append(expr);
 			break;
 		default:
-			respData.append(
-					String.format("<p>%s</p>", expr)
-					);
+			view = "/WEB-INF/views/calculatorView.jsp";
 			break;
 		}
-		
-		try (
-				PrintWriter out = resp.getWriter();
-		) {
+		if (view != null) { //위임구조를 사용해야하므로  forward
+			req.getRequestDispatcher(view).forward(req, resp);
+		} else {
+			try (PrintWriter out = resp.getWriter();) {
 //			out.print(expr);
-			out.print(respData);
+				out.print(respData);
+			}
 		}
-
 	}
 
 	private int bindAndValidate(HttpServletRequest req) {

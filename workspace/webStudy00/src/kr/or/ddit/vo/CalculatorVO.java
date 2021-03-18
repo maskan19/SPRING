@@ -16,34 +16,57 @@ public class CalculatorVO implements Serializable {
 		this.right = right;
 		this.operator = operator;
 	}
-	
-	public double left;
-	public double right;
-	public OperatorType operator;
-	
+	public double getResult() {
+		return result;
+	}
+
+	public void setResult(double result) {
+		this.result = result;
+	}
+
+	public String getExpression() {
+		return expression;
+	}
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
+	private double left;
+	private double right;
+	private OperatorType operator;
+	private double result;
+	private String expression;
+
 	public double getLeft() {
 		return left;
 	}
+
 	public void setLeft(double left) {
 		this.left = left;
 	}
+
 	public double getRight() {
 		return right;
 	}
+
 	public void setRight(double right) {
 		this.right = right;
 	}
+
 	public OperatorType getOperator() {
 		return operator;
 	}
+
 	public void setOperator(OperatorType operator) {
 		this.operator = operator;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "CalculateVO [ left=" + left+", right = " + right + ", operator = " + operator  + " ]";
+		return "CalculateVO [ left=" + left + ", right = " + right + ", operator = " + operator + " ]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,6 +79,7 @@ public class CalculatorVO implements Serializable {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,6 +97,5 @@ public class CalculatorVO implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 }

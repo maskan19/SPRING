@@ -7,10 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="<%=request.getContentLengthLong()%>/requestDesc.do" method="post">
-<input type="text" name = "test">
-<input type="submit" value="전송">
-
+<form action="<%=request.getContextPath()%>/requestDesc.do" method="get">
+	<input type="text" name="test" />
+	<input type="text" name="test" />
+	<input type="submit" value="전송" />
 </form>
 </body>
 </html>

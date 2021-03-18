@@ -2,7 +2,8 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-	version="3.1" ><!-- metadata-complete="true" : 서블렛과 관련된 정보가 모두 포함되어있다 >>개별 지정된 anotaion은 모두 무시 -->
+	version="3.1" >
+	<!-- metadata-complete="true" 어노테이션을 사용 할 수 없음 -->
 	<display-name>webStudy01</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -12,7 +13,16 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-<!-- 
+
+<!-- 	<servlet>
+		<servlet-name>ImageFormServlet</servlet-name>
+		<servlet-class>kr.or.ddit.servlet01.ImageFormServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageFormServlet</servlet-name>
+		<url-pattern>/imageForm.do</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>ImageServlet</servlet-name>
 		<servlet-class>kr.or.ddit.servlet01.ImageServlet</servlet-class>
@@ -21,28 +31,18 @@
 		<servlet-name>ImageServlet</servlet-name>
 		<url-pattern>/image.do</url-pattern>
 	</servlet-mapping>
-
-
-	<servlet>
-		<servlet-name>ImageFormServlet</servlet-name>
-		<servlet-class>kr.or.ddit.servlet01.ImageFormServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ImageFormServlet</servlet-name>
-		<url-pattern>/imageForm.do</url-pattern>
-	</servlet-mapping> -->
-
+	
 	<servlet>
 		<servlet-name>DescriptionServlet</servlet-name>
 		<servlet-class>kr.or.ddit.servlet01.DescriptionServlet</servlet-class>
 		<init-param>
 			<param-name>paramName</param-name>
 			<param-value>paramValue</param-value>
-		</init-param><!-- 서블릿이 초기화될 때 전달되는 파라미터 -->
-		<load-on-startup>1</load-on-startup> <!-- 서블릿이 생성될 순서 -->
+		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DescriptionServlet</servlet-name>
 		<url-pattern>/desc.do</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 </web-app>
