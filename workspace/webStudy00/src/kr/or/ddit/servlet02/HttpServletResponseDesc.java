@@ -38,6 +38,12 @@ import javax.servlet.http.HttpServletResponse;
  * 		response.setHeader(name, value)
  * 		response.setDateHeader(name, value(long)) 
  * 		response.setIntHeader(name, value(int))
+ * 			1) 캐시 제어
+ * 			2) auto request(polling)
+ * 			3) 흐름 제어(redirect / forward[include])
+ * 
+ * 
+ * 
  * 3. Response Body(message body, contetn body)
  * 		response.getWriter(), response.getOutputStream()으로 기록
  *

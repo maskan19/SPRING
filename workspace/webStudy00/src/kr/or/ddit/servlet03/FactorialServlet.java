@@ -23,6 +23,7 @@ public class FactorialServlet extends HttpServlet{
 		req.getRequestDispatcher(view).forward(req, resp);
 	}
 	
+	//RESTful URI - 행위에 대한 정보는 uri에 포함되지 않아야한다.
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
