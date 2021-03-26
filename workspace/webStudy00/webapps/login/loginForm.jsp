@@ -35,6 +35,7 @@ font-weight: bold;
 	<input type="text" name="mem_id" placeholder="아이디"
 		value="<%=Objects.toString(failedId, "") %>"	/>
 	<input type="text" name="mem_pass" placeholder="비밀번호"/>
+	<input type="checkbox" name="saveId" value="saveId">아이디 기억하기
 	<input type="submit" value="로그인" />
 </form>
 </body>
