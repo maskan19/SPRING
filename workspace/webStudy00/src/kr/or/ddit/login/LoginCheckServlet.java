@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +32,18 @@ public class LoginCheckServlet extends HttpServlet {
 			boolean auth = authenticate(mem_id, mem_pass);	
 			if(auth) {
 //		인증 성공시 index.jsp 로 이동(현재 요청 정보 삭제).
+				String saveId = req.getParameter("saveId");//////////////////
 				redirect = true;
 				view = "/";
 				session.setAttribute("authId", mem_id);
+				Cookie idCookie = new Cookie("idCookie", mem_id);
+				idCookie.setPath(req.getContextPath());
+				int maxAge = 0;
+				if("saveId".equals(saveId)) { //값이 고정된 것을 중심으로 짜면 널체크를 할 필요가 없음
+					maxAge = 60*60*24*7;
+				}
+				idCookie.setMaxAge(maxAge);
+				resp.addCookie(idCookie);
 			}else {
 //		인증 실패시 loginForm.jsp 로 이동
 				redirect = true;
