@@ -35,7 +35,7 @@
 					if (tz != null)
 						continue;
 			%>
-			<option value="<%=local%>"><%=tz.getDisplayName(locale)%></option>
+			<option value="<%=local%>"><%=tz.getDisplayName(locales)%></option>
 			<%
 				}
 			%>
