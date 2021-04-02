@@ -52,7 +52,7 @@ public class MemberInsertServlet extends HttpServlet {
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
-		boolean redirect = false;
+//		boolean redirect = false;
 		String view = null;
 		String message = null;
 		if (valid) {
@@ -63,8 +63,7 @@ public class MemberInsertServlet extends HttpServlet {
 				message = "아이디 중복";
 				break;
 			case OK: // redirect
-				redirect = true;
-				view = "/login/loginForm.jsp";
+				view = "redirect:/login/loginForm.jsp";
 				break;
 			default:
 				message = "서버 오류, 잠시 뒤 다시 시도하세요.";
@@ -79,11 +78,14 @@ public class MemberInsertServlet extends HttpServlet {
 		req.setAttribute("message", message);
 
 		// 중복 코드 발생
+		boolean redirect = view.startsWith("redirect:");
 		if (redirect) {
+			view = view.substring("redirect:".length());
 			resp.sendRedirect(req.getContextPath() + view);
 		} else {
 			req.getRequestDispatcher(view).forward(req, resp);
-			// server side 경로
+			// dispatch 로 가지고 다니는 이유
+			// 인증은 늘 redirect
 		}
 	}
 

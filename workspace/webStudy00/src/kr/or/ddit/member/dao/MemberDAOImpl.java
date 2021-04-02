@@ -18,7 +18,7 @@ public class MemberDAOImpl implements IMemberDAO {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL");
 		sql.append(" FROM MEMBER");
-		sql.append(" WHERE MEM_ID = ?   ");
+		sql.append(" WHERE MEM_ID = ?  AND MEM_DELETE IS NULL ");
 		try (Connection conn = ConnectionFactory.getConnection();
 //			Statement stmt = conn.createStatement();	
 				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
@@ -179,8 +179,18 @@ public class MemberDAOImpl implements IMemberDAO {
 
 	@Override
 	public int deleteMember(String mem_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE member");
+		sql.append("SET MEM_DELETE = 'Y' WHERE mem_id =?");
+
+		try (Connection conn = ConnectionFactory.getConnection();
+				// Statement stmt = conn.createStatement();
+				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
+			pstmt.setString(1, mem_id);
+			return pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}
 	}
 
 	@Override

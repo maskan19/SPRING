@@ -95,13 +95,22 @@
 			</td>
 		</tr>
 	</table>
+	<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
+		<input type="hidden" name="password">
+	</form>
 	<script type="text/javascript">
+	let deleteForm = $("#deleteForm");
 		$(".controlBtn").on("click", function(){
 			let btnId = $(this).prop("id");
 			if(btnId == "updateBtn"){
 				location.href="<%=request.getContextPath() %>/member/memberUpdate.do";
 			}else if(btnId == "deleteBtn"){
-				
+				let password = prompt("비번입력");
+				if(!password){ //입력하지 않은 경우 아무 일도 하지 않음
+					return;
+				}
+				deleteForm.find("[name='password']").val(password);
+				deleteForm.submit();
 			}
 		});
 	</script>

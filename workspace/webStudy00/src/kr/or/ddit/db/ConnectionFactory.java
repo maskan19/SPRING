@@ -7,33 +7,45 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import oracle.jdbc.pool.OracleDataSource;
+
 /**
  * Factory Object[Method] Pattern
  *  : 객체 생성을 전담하는 객체를 운영하는 구조.
  *
+ * pooling 정책
  */
 public class ConnectionFactory {
 	private static String driverClassName;
 	private static String url;
 	private static String user;
 	private static String password;
+	private static DataSource ds;
 	static {
 		Properties properties = new Properties();
 		try(
 			InputStream is = ConnectionFactory.class.getResourceAsStream("dbInfo.properties");
 		) {
 			properties.load(is);
-			driverClassName = properties.getProperty("driverClassName");
+//			driverClassName = properties.getProperty("driverClassName");
 			url = properties.getProperty("url");
 			user = properties.getProperty("user"); 
 			password = properties.getProperty("password");
-			Class.forName(driverClassName);
-		} catch (ClassNotFoundException | IOException e) {
+			
+			ds = new OracleDataSource();
+			((OracleDataSource)ds).setURL(url);
+			((OracleDataSource)ds).setUser(user);
+			((OracleDataSource)ds).setPassword(password);
+			
+//			Class.forName(driverClassName);
+		} catch (IOException | SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	public static Connection getConnection() throws SQLException{
-		return DriverManager.getConnection(url, user, password);
+		return ds.getConnection();
 	}
 }

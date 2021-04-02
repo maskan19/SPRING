@@ -63,7 +63,7 @@ public class MemberUpdateServlet extends HttpServlet{
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
-		boolean redirect = false;
+//		boolean redirect = false;
 		String view = null;
 		String message = null;
 		if (valid) {
@@ -74,8 +74,7 @@ public class MemberUpdateServlet extends HttpServlet{
 				message = "비번 오류";
 				break;
 			case OK:
-				redirect = true;
-				view = "/mypage.do";
+				view = "redirect:/mypage.do";
 				break;
 			default:
 				message = "서버 오류, 잠시 뒤 다시 시도하세요.";
@@ -89,7 +88,9 @@ public class MemberUpdateServlet extends HttpServlet{
 
 		req.setAttribute("message", message);
 
+		boolean redirect = view.startsWith("redirect:");
 		if (redirect) {
+			view = view.substring("redirect:".length());
 			resp.sendRedirect(req.getContextPath() + view);
 		} else {
 			req.getRequestDispatcher(view).forward(req, resp);

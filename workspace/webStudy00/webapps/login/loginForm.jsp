@@ -44,7 +44,7 @@ font-weight: bold;
 		value="<%=Objects.toString(idCookie, "") %>"	/>
 	<input type="text" name="mem_pass" placeholder="비밀번호"/>
 	<input type="checkbox" name="saveId" value="saveId" <%=idCookie!=null?"checked" : "" %>>아이디 기억하기
-	<input type="submit" value="로그인" />
+	<input type="submit"  value="로그인" />
 </form>
 </body>
 </html>
