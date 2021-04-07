@@ -88,29 +88,35 @@
 	</select>
 	
 	<insert id="insertProd" parameterType="ProdVO">
-		
-		<selectKey resultType="string" order="BEFORE" keyProperty="prod_id"><!-- pk를 동적으로 생성 -->
-			SELECT #{prod_lgu}|| LPAD(TO_NUMBER(SUBSTR(NVL(MAX(PROD_ID), LPAD('0', 10, '0')), LENGTH(#{prod_lgu})+1))+1, 6, '0')
+		<selectKey resultType="string" order="BEFORE" keyProperty="prod_id">
+			SELECT #{prod_lgu} || LPAD(TO_NUMBER(SUBSTR(NVL(MAX(PROD_ID), LPAD('0', 10, '0')), LENGTH(#{prod_lgu})+1))+1, 6, '0')
 			FROM PROD
 			WHERE PROD_LGU = #{prod_lgu}
 		</selectKey>
-		  INSERT INTO prod (
-		    prod_id,    prod_name,    prod_lgu,    prod_buyer,
-		    prod_cost,    prod_price,    prod_sale,    prod_outline,
-		    prod_detail,    prod_img,    prod_totalstock,    prod_insdate,
-		    prod_properstock,    prod_size,    prod_color,    prod_delivery,
-		    prod_unit,    prod_qtyin,    prod_qtysale,    prod_mileage
+		INSERT INTO PROD (
+		    PROD_ID,    PROD_NAME,
+		    PROD_LGU,    PROD_BUYER,
+		    PROD_COST,    PROD_PRICE,
+		    PROD_SALE,    PROD_OUTLINE,
+		    PROD_DETAIL,    PROD_IMG,
+		    PROD_TOTALSTOCK,    PROD_INSDATE,
+		    PROD_PROPERSTOCK,    PROD_SIZE,
+		    PROD_COLOR,    PROD_DELIVERY,
+		    PROD_UNIT,    PROD_QTYIN,
+		    PROD_QTYSALE,    PROD_MILEAGE
 		) VALUES (
-		   #{prod_id},    #{prod_name},    #{prod_lgu},    #{prod_buyer},
-		    #{prod_cost},    prod_price,    prod_sale,    prod_outline,
-		    prod_detail,    prod_img,    prod_totalstock,    sysdate,
-		    prod_properstock,    prod_size,    prod_color,    prod_delivery,
-		    prod_unit,    prod_qtyin,    prod_qtysale,    prod_mileage
-		);
-				
-		
+			#{prod_id,jdbcType=VARCHAR},    #{prod_name,jdbcType=VARCHAR},
+		    #{prod_lgu,jdbcType=VARCHAR},    #{prod_buyer,jdbcType=VARCHAR},
+		    #{prod_cost,jdbcType=NUMERIC},    #{prod_price,jdbcType=NUMERIC},
+		    #{prod_sale,jdbcType=NUMERIC},    #{prod_outline,jdbcType=VARCHAR},
+		    #{prod_detail,jdbcType=VARCHAR},    #{prod_img,jdbcType=VARCHAR},
+		    #{prod_totalstock,jdbcType=NUMERIC},    SYSDATE,
+		    #{prod_properstock,jdbcType=NUMERIC},    #{prod_size,jdbcType=VARCHAR},
+		    #{prod_color,jdbcType=VARCHAR},    #{prod_delivery,jdbcType=VARCHAR},
+		    #{prod_unit,jdbcType=VARCHAR},    #{prod_qtyin,jdbcType=NUMERIC},
+		    #{prod_qtysale,jdbcType=NUMERIC},    #{prod_mileage,jdbcType=NUMERIC}	
+		)
 	</insert>
-	
 	
 	
 	

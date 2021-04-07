@@ -52,7 +52,7 @@ public class ConnectionFactory {
 		((BasicDataSource) ds).setUrl(url);
 		((BasicDataSource) ds).setUsername(user);
 		((BasicDataSource) ds).setPassword(password);
-		((BasicDataSource) ds).setInitialSize(initialSize);// 기본 생성 pool의 개숰
+		((BasicDataSource) ds).setInitialSize(initialSize);// 기본 생성 pool의 개수
 		((BasicDataSource) ds).setMaxTotal(maxTotal);// 최대 pool의 개수
 		((BasicDataSource) ds).setMaxWaitMillis(maxWait);// 기본 생성 개수를 초과한 경우 최대 2초 기다린 후 maxtotal까지 만듬
 		// sqlexception을 runtimeexception으로 처리함

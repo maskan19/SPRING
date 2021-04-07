@@ -46,10 +46,7 @@ public class ProdListServlet extends HttpServlet {
 		String prodLgu = req.getParameter("prod_lgu");
 		String prodBuyer = req.getParameter("prod_buyer");
 		String prodName = req.getParameter("prod_name");
-		ProdVO detailSearch = new ProdVO();
-		detailSearch.setProd_lgu(prodLgu);
-		detailSearch.setProd_buyer(prodBuyer);
-		detailSearch.setProd_name(prodName);
+		ProdVO detailSearch = ProdVO.builder().prod_lgu(prodLgu).prod_buyer(prodBuyer).prod_name(prodName).build();
 
 //		builder패턴을 사용하면 생성자를 대신할 수 있다.
 
