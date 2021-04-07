@@ -36,10 +36,9 @@ public class IdCheckServlet extends HttpServlet {
 			service.retrieveMember(mem_id);
 			resultMap.put("result", ServiceResult.FAIL);
 		} catch (Exception e) {
-			// 사용 가능할 경우
 			resultMap.put("result", ServiceResult.OK);
 		}
-		// 직렬화 / 마샬링
+
 		resp.setContentType(MimeType.JSON.getMime());
 		try (PrintWriter out = resp.getWriter();) {
 			ObjectMapper mapper = new ObjectMapper();

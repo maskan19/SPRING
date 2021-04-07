@@ -10,7 +10,7 @@ $.fn.test2 = function() {
 	console.log(this)
 	return this;
 }
-
+//동기를 비동기로 바꾸는 코드
 $.fn.formToAjax = function(param) {
 	this.on("submit", function(event) {
 		event.preventDefault(); // 이벤트의 기능을 막음

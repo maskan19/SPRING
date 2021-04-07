@@ -1,3 +1,6 @@
+<%@page import="java.util.Set"%>
+<%@page import="kr.or.ddit.vo.ProdVO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -89,30 +92,81 @@
 			<td><%=member.getMem_delete()%></td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<input type="button" value="수정" class="controlBtn" id="updateBtn">
+			<td colspan="2"><input type="button" value="수정"
+				class="controlBtn" id="updateBtn">
 				<button type="button" class="controlBtn" id="deleteBtn">탈퇴</button>
 			</td>
 		</tr>
+		<tr>
+			<th>구매목록</th>
+			<td>
+				<table>
+					<thead>
+						<tr>
+							<th>상품코드</th>
+							<th>상품명</th>
+							<th>상품분류명</th>
+							<th>거래처명</th>
+							<th>구매가</th>
+							<th>판매가</th>
+							<th>마일리지</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							Set<ProdVO> prodList = member.getProdList();
+							if (prodList.size() > 0) {
+								for (ProdVO prod : prodList) {
+						%>
+						<tr>
+							<td><%=prod.getProd_id()%></td>
+							<td><a
+								href="<%=request.getContextPath()%>/prod/prodView.do?what=<%=prod.getProd_id()%>"><%=prod.getProd_name()%></a></td>
+							<td><%=prod.getLprod_nm()%></td>
+							<td><%=prod.getBuyer().getBuyer_name()%></td>
+							<td><%=prod.getProd_cost()%></td>
+							<td><%=prod.getProd_price()%></td>
+							<td><%=prod.getProd_mileage()%></td>
+						</tr>
+						<%
+							}
+							} else {
+						%>
+						<tr>
+							<td colspan="7">구매기록이 없음.</td>
+						</tr>
+						<%
+							}
+						%>
+
+					</tbody>
+				</table>
+			</td>
+		</tr>
 	</table>
-	<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
-		<input type="hidden" name="password">
+	<form id="deleteForm"
+		action="<%=request.getContextPath()%>/member/memberDelete.do"
+		method="post">
+		<input type="hidden" name="password" />
 	</form>
 	<script type="text/javascript">
-	let deleteForm = $("#deleteForm");
+		let deleteForm = $("#deleteForm");
 		$(".controlBtn").on("click", function(){
 			let btnId = $(this).prop("id");
 			if(btnId == "updateBtn"){
-				location.href="<%=request.getContextPath() %>/member/memberUpdate.do";
-			}else if(btnId == "deleteBtn"){
-				let password = prompt("비번입력");
-				if(!password){ //입력하지 않은 경우 아무 일도 하지 않음
-					return;
-				}
-				deleteForm.find("[name='password']").val(password);
-				deleteForm.submit();
-			}
-		});
+				location.href="<%=request.getContextPath()%>
+		/member/memberUpdate.do";
+							} else if (btnId == "deleteBtn") {
+								let password = prompt("비번 입력");
+								if (!password) {
+									return;
+								}
+								deleteForm.find("[name='password']").val(
+										password);
+								deleteForm.submit();
+							}
+						});
 	</script>
 </body>
 </html>
+

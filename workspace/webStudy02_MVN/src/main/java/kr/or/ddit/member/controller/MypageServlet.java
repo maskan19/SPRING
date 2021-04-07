@@ -16,13 +16,11 @@ import kr.or.ddit.member.service.IAuthenticateService;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
-import sun.security.util.Length;
 
 @WebServlet("/mypage.do")
 public class MypageServlet extends HttpServlet {
 	IMemberService service = new MemberServiceImpl();
 	IAuthenticateService authService = new AuthenticateServiceImpl();
-		
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,22 +35,19 @@ public class MypageServlet extends HttpServlet {
 			resp.sendError(400);
 			return;
 		}
-
 		HttpSession session = req.getSession();
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String mem_id = authMember.getMem_id();
 
 		ServiceResult result = authService.authenticate(new MemberVO(mem_id, mem_pass));
-
 		String view = null;
 		if (ServiceResult.OK.equals(result)) {
-
 			MemberVO detailMember = service.retrieveMember(mem_id);
+
 			req.setAttribute("member", detailMember);
 			view = "/WEB-INF/views/member/mypage.jsp";
-			
 		} else {
-			session.setAttribute("message", "비밀번호 오류");
+			session.setAttribute("message", "비번 오류");
 			view = "redirect:/mypage.do";
 		}
 
@@ -65,7 +60,5 @@ public class MypageServlet extends HttpServlet {
 			// dispatch 로 가지고 다니는 이유
 			// 인증은 늘 redirect
 		}
-
 	}
-
 }

@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.or.ddit.db.ConnectionFactory;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.AuthenticateServiceImpl;
@@ -22,18 +25,18 @@ import kr.or.ddit.member.service.IAuthenticateService;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/login/loginCheck.do")
-public class LoginCheckServlet extends HttpServlet{
-	private IAuthenticateService service =
-			new AuthenticateServiceImpl();
-	
+public class LoginCheckServlet extends HttpServlet {
+	private IAuthenticateService service = new AuthenticateServiceImpl();
+	private static final Logger logger = LoggerFactory.getLogger(LoginCheckServlet.class);
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
-		if(session.isNew()) {
+		if (session.isNew()) {
 			resp.sendError(400);
 			return;
 		}
-		//		요청 분석
+		// 요청 분석
 		String mem_id = req.getParameter("mem_id");
 		String mem_pass = req.getParameter("mem_pass");
 		String saveId = req.getParameter("saveId");
@@ -41,10 +44,11 @@ public class LoginCheckServlet extends HttpServlet{
 		boolean redirect = false;
 		String message = null;
 		boolean valid = validate(mem_id, mem_pass);
-		if(valid) {
+		if (valid) {
 //		인증(id==password)
 			MemberVO member = new MemberVO(mem_id, mem_pass);
 			ServiceResult result = service.authenticate(member);
+			logger.debug("인증전 Memervo");
 			switch (result) {
 			case OK:
 				redirect = true;
@@ -53,8 +57,8 @@ public class LoginCheckServlet extends HttpServlet{
 				Cookie idCookie = new Cookie("idCookie", mem_id);
 				idCookie.setPath(req.getContextPath());
 				int maxAge = 0;
-				if("saveId".equals(saveId)) {
-					maxAge = 60*60*24*7;
+				if ("saveId".equals(saveId)) {
+					maxAge = 60 * 60 * 24 * 7;
 				}
 				idCookie.setMaxAge(maxAge);
 				resp.addCookie(idCookie);
@@ -72,40 +76,27 @@ public class LoginCheckServlet extends HttpServlet{
 				session.setAttribute("failedId", mem_id);
 				break;
 			}
-		}else {
+		} else {
 //			1) 검증
 			redirect = true;
 			view = "/login/loginForm.jsp";
 			message = "아이디나 비번 누락";
 		}
-		
+
 //		view 로 이동
-		if(redirect) {
+		if (redirect) {
 			req.getSession().setAttribute("message", message);
 			resp.sendRedirect(req.getContextPath() + view);
-		}else {
+		} else {
 			req.setAttribute("message", message);
 			req.getRequestDispatcher(view).forward(req, resp);
 		}
-		
-	}
 
+	}
 
 	private boolean validate(String mem_id, String mem_pass) {
 		boolean valid = true;
-		valid = !(mem_id==null || mem_id.isEmpty() ||
-				mem_pass==null || mem_pass.isEmpty());
+		valid = !(mem_id == null || mem_id.isEmpty() || mem_pass == null || mem_pass.isEmpty());
 		return valid;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

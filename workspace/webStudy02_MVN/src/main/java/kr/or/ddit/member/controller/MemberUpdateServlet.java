@@ -20,36 +20,36 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
 
 @WebServlet("/member/memberUpdate.do")
-public class MemberUpdateServlet extends HttpServlet{
+public class MemberUpdateServlet extends HttpServlet {
 	private IMemberService service = new MemberServiceImpl();
-	
+
 	private void addCommandAttribute(HttpServletRequest req) {
 		req.setAttribute("command", "update");
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
 		HttpSession session = req.getSession();
-		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
+		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
- 		MemberVO member = service.retrieveMember(authId);
- 		req.setAttribute("member", member);
- 		String view = "/WEB-INF/views/member/memberForm.jsp";
- 		req.getRequestDispatcher(view).forward(req, resp);
+		MemberVO member = service.retrieveMember(authId);
+		req.setAttribute("member", member);
+		String view = "/WEB-INF/views/member/memberForm.jsp";
+		req.getRequestDispatcher(view).forward(req, resp);
 //		memberForm.jsp 재활용
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addCommandAttribute(req);
-		
+
 		req.setCharacterEncoding("UTF-8");
-		
+
 //		1. 요청 접수
 		MemberVO member = new MemberVO();
 		HttpSession session = req.getSession();
-		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
+		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
 		member.setMem_id(authId);
 		req.setAttribute("member", member);
@@ -63,7 +63,6 @@ public class MemberUpdateServlet extends HttpServlet{
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
-//		boolean redirect = false;
 		String view = null;
 		String message = null;
 		if (valid) {
@@ -131,13 +130,3 @@ public class MemberUpdateServlet extends HttpServlet{
 		return valid;
 	}
 }
-
-
-
-
-
-
-
-
-
-

@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * 자바빈 규약(VO, DTO. Model, Bean)
+ * 자바빈 규약(VO, DTO, Model, Bean)
  * 1. 값을 가질 수 있는 속성(property) 존재
  * 2. property 캡슐화
- * 3. property 에 접근할수 있는 interface제공
- * 	  Getter/Setter : get[set]property_name(carmel 표기법)
+ * 3. property 에 접근할수있는 interface제공
+ * 	 Getter/Setter : get[set]property_name(carmel 표기법)
  * 4. 객체 상태 비교 메소드 제공
- * 	==(주소), equals(상태 비교)의 차이
- * 5. 객체 상태 확인 메소드 제공 : toString 
+ * 	==(주소), equals(상태 비교) 의 차이
+ * 5. 객체 상태 확인 메소드 제공 : toString
  * 6. 직렬화 지원
+ *
  */
 public class ParameterVO implements Serializable{
 	private String[] param1;
@@ -91,6 +92,13 @@ public class ParameterVO implements Serializable{
 				+ Arrays.toString(param3) + ", param4=" + Arrays.toString(param4) + ", param5=" + param5 + "]";
 	}
 	
-	
-	
 }
+
+
+
+
+
+
+
+
+

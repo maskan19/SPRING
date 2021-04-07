@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<!-- connection 생성 > query 객체를 만듦 -->
+	<!-- connection 설정 -->
+	<properties resource="kr/or/ddit/dbInfo.properties"></properties>
+	<settings>
+	<setting name="mapUnderscoreToCamelCase" value="true"/><!-- db의 언더스코어(스네이크) 컬럼명을 낙타법 자바객체로 바꿔줌 -->	
+	</settings>
+	<environments default="dev"><!-- default로 기본 DB설정 -->
+		<environment id="dev">
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+				<!-- connection 생성 파트 -->
+				<property name="driver" value="${driverClassName}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${user}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+		<!-- <environment id="stage"> sub DB
+			<transactionManager type="JDBC"></transactionManager>
+			<dataSource type="POOLED">
+			connection 생성 파트
+				<property name="driver" value="${sub1.driverClassName}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${user}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment> -->
+	</environments>
+	<mappers>
+		<mapper resource="kr/or/ddit/mybatis/mappers/Prop.xml"/>
+	</mappers>
+</configuration>

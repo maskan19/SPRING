@@ -5,11 +5,12 @@ import java.util.List;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.dao.IMemberDAO;
-import kr.or.ddit.member.dao.MemberDAOImpl;
+import kr.or.ddit.member.dao.MemberDaoImpl;
 import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.PagingVO;
 
 public class MemberServiceImpl implements IMemberService {
-	private IMemberDAO dao = new MemberDAOImpl();
+	private IMemberDAO dao = MemberDaoImpl.getInstance();
 	private IAuthenticateService authService = new AuthenticateServiceImpl();
 
 	@Override
@@ -89,10 +90,15 @@ public class MemberServiceImpl implements IMemberService {
 	}
 
 	@Override
-	public List<MemberVO> retrieveMemberList() {
+	public List<MemberVO> retrieveMemberList(PagingVO pagingVO) {
 		List<MemberVO> memberlist = null;
-		memberlist = dao.selectMemberList();
+		memberlist = dao.selectMemberList(pagingVO);
 		return memberlist;
+	}
+
+	@Override
+	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO) {
+		return dao.selectTotalRecord(pagingVO);
 	}
 
 }

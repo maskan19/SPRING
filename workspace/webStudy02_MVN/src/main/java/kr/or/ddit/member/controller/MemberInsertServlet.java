@@ -46,13 +46,13 @@ public class MemberInsertServlet extends HttpServlet {
 		try {
 			BeanUtils.populate(member, req.getParameterMap());
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e); // parameter를 꼭 넘겨야한다.
+			throw new RuntimeException(e); // e parameter를 꼭 넘겨야한다.
 		} // 속도가 느림
 //		2. 검증
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(member, errors);
-//		boolean redirect = false;
+
 		String view = null;
 		String message = null;
 		if (valid) {
@@ -76,7 +76,6 @@ public class MemberInsertServlet extends HttpServlet {
 		}
 
 		req.setAttribute("message", message);
-
 		// 중복 코드 발생
 		boolean redirect = view.startsWith("redirect:");
 		if (redirect) {
