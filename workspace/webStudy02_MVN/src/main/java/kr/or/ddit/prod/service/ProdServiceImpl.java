@@ -41,14 +41,20 @@ public class ProdServiceImpl implements IProdService {
 
 	@Override
 	public ServiceResult createProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = ServiceResult.FAIL;
+		if(dao.insertProd(prod)>0) {
+			result = ServiceResult.OK;
+		};
+		return result;
 	}
 
 	@Override
 	public ServiceResult modifyProd(ProdVO prod) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = ServiceResult.FAIL;
+		if(dao.insertProd(prod)>0) {
+			result = ServiceResult.OK;
+		};
+		return result;
 	}
 
 	public int selectTotalRecord(PagingVO<ProdVO> pagingVO) {

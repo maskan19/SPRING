@@ -1,5 +1,8 @@
 package kr.or.ddit.method;
 
+import kr.or.ddit.annotation.FirstAnnotation;
+
+@FirstAnnotation(number=2)
 public class MethodInvocation {
 
 	public static void main(String[] args) {

@@ -154,8 +154,7 @@
 		$(".controlBtn").on("click", function(){
 			let btnId = $(this).prop("id");
 			if(btnId == "updateBtn"){
-				location.href="<%=request.getContextPath()%>
-		/member/memberUpdate.do";
+				location.href="<%=request.getContextPath()%>/member/memberUpdate.do";
 							} else if (btnId == "deleteBtn") {
 								let password = prompt("비번 입력");
 								if (!password) {

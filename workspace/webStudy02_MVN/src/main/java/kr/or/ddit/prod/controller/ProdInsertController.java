@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -22,8 +24,8 @@ import kr.or.ddit.prod.service.ProdServiceImpl;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
-@WebServlet("/prod/prodInsert.do")
-public class ProdInsertServlet extends HttpServlet{
+@Controller
+public class ProdInsertController extends HttpServlet{
 	private IProdService service = ProdServiceImpl.getInstance();
 	private IOthersDAO othersDAO = OthersDAOImpl.getInstance();// 세션 팩토리가 싱글톤이므로 모든 DAO의 상태가 동일하다?
 	
@@ -36,23 +38,17 @@ public class ProdInsertServlet extends HttpServlet{
 		req.setAttribute("buyerList", buyerList);
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping("/prod/prodInsert.do")
+	public String insertForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addAttribute(req);
 		
-		String view = "/WEB-INF/views/prod/prodForm.jsp";
+		String view = "prod/prodForm";
 		
-		boolean redirect = view.startsWith("redirect:");
-		if(redirect) {
-			view = view.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		return view;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/prod/prodInsert.do",method=RequestMethod.POST)
+	public String prodInsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		ProdVO prod = new ProdVO();
 		req.setAttribute("prod", prod);
@@ -77,21 +73,14 @@ public class ProdInsertServlet extends HttpServlet{
 				view = "redirect:/prod/prodView.do?what="+prod.getProd_id();
 			}else {
 				message = "서버 오류";
-				view = "/WEB-INF/views/prod/prodForm.jsp";
+				view = "prod/prodForm";
 			}
 		}else {
-			view = "/WEB-INF/views/prod/prodForm.jsp";
+			view = "prod/prodForm";
 		}
 		
 		req.setAttribute("message", message);
-		
-		boolean redirect = view.startsWith("redirect:");
-		if(redirect) {
-			view = view.substring("redirect:".length());
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.getRequestDispatcher(view).forward(req, resp);
-		}
+		return view;
 	}
 
 	private boolean validate(ProdVO prod, Map<String, String> errors) {

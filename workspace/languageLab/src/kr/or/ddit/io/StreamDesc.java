@@ -11,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import kr.or.ddit.annotation.FirstAnnotation;
+
 /**
  * 스트림 : 연속성을 가진 일련의 데이터 흐름이면서 데이터의 전송 단방향 통로
  * 
@@ -45,6 +47,7 @@ import java.net.URLConnection;
  * 		4. 자원 release : close()
  * 
  */
+@FirstAnnotation(value = "stream", number=2)
 public class StreamDesc {
 
 	public static void main(String[] args) throws IOException {

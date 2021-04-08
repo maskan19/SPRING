@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -23,8 +26,8 @@ import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
-@WebServlet("/prod/prodList.do")
-public class ProdListServlet extends HttpServlet {
+@Controller
+public class ProdReadController {
 	private IProdService service = ProdServiceImpl.getInstance();
 	private IOthersDAO othersDAO = OthersDAOImpl.getInstance(); // 세션 팩토리가 싱글톤이므로 모든 DAO의 상태가 동일하다?
 
@@ -37,9 +40,8 @@ public class ProdListServlet extends HttpServlet {
 		req.setAttribute("lprodList", lprodList);
 		req.setAttribute("buyerList", buyerList);
 	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping("/prod/prodList.do")
+	public String prodList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addAttribute(req);
 
 		String pageParam = req.getParameter("page");
@@ -65,7 +67,7 @@ public class ProdListServlet extends HttpServlet {
 		pagingVO.setDataList(prodList);
 		
 		String accept = req.getHeader("Accept");
-		
+		String view = null;
 		if(StringUtils.containsIgnoreCase(accept, "json")) {
 			resp.setContentType("application/json;charset=UTF-8");
 			//마샬링+직렬화
@@ -75,13 +77,25 @@ public class ProdListServlet extends HttpServlet {
 					){
 				mapper.writeValue(out, pagingVO);//write 계열이 마샬링
 			}
-			
 		}else {
 			req.setAttribute("pagingVO", pagingVO);
-			String view = "/WEB-INF/views/prod/prodList.jsp";
-			req.getRequestDispatcher(view).forward(req, resp);
+			view = "prod/prodList";
 		}
-			
+		return view;
 
 	}
+	
+	@RequestMapping("/prod/prodView.do")
+	public String prodView(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String prod_id = req.getParameter("what");
+		if (prod_id == null || prod_id.isEmpty()) {
+			resp.sendError(400);
+			return null;
+		}
+		ProdVO prod = service.retrieveProd(prod_id);
+		req.setAttribute("prod", prod);
+		return "prod/prodView";
+	}
+	
+	
 }

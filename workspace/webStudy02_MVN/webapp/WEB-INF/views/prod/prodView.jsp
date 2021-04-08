@@ -117,15 +117,17 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<button type="button" onclick="eventHandler();">상품 목록으로</button> <%-- 			<button type="button" onclick="location.href='<%=request.getContextPath()%>/prod/prodList.do'">상품 목록으로</button> --%>
+				<button type="button" onclick="eventHandler();">상품 목록으로</button>
+ <%-- 			<button type="button" onclick="location.href='<%=request.getContextPath()%>/prod/prodList.do'">상품 목록으로</button> --%>
+				<button type="button" onclick="location.href='prodUpdate.do?what=<%=prod.getProd_id() %>';">수정</button>
+				<button type="button" onclick="location.href='<%=request.getContextPath()%>/prod/prodDelete.do">삭제</button>
 			</td>
 		</tr>
 	</table>
 </body>
 <script type="text/javascript"> 
 function eventHandler(){
-location.href="<%=request.getContextPath()%>
-	/prod/prodList.do";
+location.href="<%=request.getContextPath()%>/prod/prodList.do";
 	};
 </script>
 </html>
