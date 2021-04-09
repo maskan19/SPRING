@@ -21,7 +21,7 @@
 		<servlet-class>kr.or.ddit.mvc.FrontController</servlet-class>
 		<init-param>
 			<param-name>basePackages</param-name>
-			<param-value>kr.or.ddit.member kr.or.ddit.prod</param-value>
+			<param-value>kr.or.ddit</param-value>
 		</init-param>
 		<init-param>
 			<param-name>prefix</param-name>

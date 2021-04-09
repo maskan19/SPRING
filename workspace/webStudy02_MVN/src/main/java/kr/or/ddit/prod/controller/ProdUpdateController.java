@@ -16,6 +16,8 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -36,12 +38,13 @@ public class ProdUpdateController {
 	}
 
 	@RequestMapping("/prod/prodUpdate.do")
-	public String updateForm(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		String prod_id = req.getParameter("what");
-		if (StringUtils.isBlank(prod_id)) {
-			resp.sendError(400);
-			return null;
-		}
+	public String updateForm(
+			@RequestParam(value = "what", required = true, defaultValue="1") String prod_id,
+			HttpServletRequest req) {
+//		if (StringUtils.isBlank(prod_id)) {
+//			resp.sendError(400);
+//			return null;
+//		}
 
 		addAttribute(req);
 		ProdVO prod = service.retrieveProd(prod_id);
@@ -50,14 +53,10 @@ public class ProdUpdateController {
 	}
 
 	@RequestMapping(value = "/prod/prodUpdate.do", method = RequestMethod.POST)
-	public String update(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		ProdVO prod = new ProdVO();
+	public String update(@ModelAttribute("prod") ProdVO prod,
+			HttpServletRequest req, HttpServletResponse resp) {
+		addAttribute(req);
 		req.setAttribute("prod", prod);
-		try {
-			BeanUtils.populate(prod, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(prod, errors);
@@ -74,7 +73,6 @@ public class ProdUpdateController {
 		} else {
 			view = "prod/prodForm";
 		}
-
 		req.setAttribute("message", message);
 
 		return view;

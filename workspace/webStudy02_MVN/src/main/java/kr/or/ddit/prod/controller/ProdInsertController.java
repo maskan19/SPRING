@@ -17,6 +17,7 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -39,24 +40,23 @@ public class ProdInsertController extends HttpServlet{
 	}
 	
 	@RequestMapping("/prod/prodInsert.do")
-	public String insertForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String insertForm(HttpServletRequest req) {
 		addAttribute(req);
-		
 		String view = "prod/prodForm";
-		
 		return view;
 	}
 	
 	@RequestMapping(value = "/prod/prodInsert.do",method=RequestMethod.POST)
-	public String prodInsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		ProdVO prod = new ProdVO();
-		req.setAttribute("prod", prod);
-		try {
-			BeanUtils.populate(prod, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}//한번에 넘기기
+	public String prodInsert(
+			@ModelAttribute("prod") ProdVO prod,
+			HttpServletRequest req, HttpServletResponse resp) {
+//		ProdVO prod = new ProdVO();
+//		req.setAttribute("prod", prod);
+//		try {
+//			BeanUtils.populate(prod, req.getParameterMap());
+//		} catch (IllegalAccessException | InvocationTargetException e) {
+//			throw new RuntimeException(e);
+//		}//한번에 넘기기
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = validate(prod, errors);

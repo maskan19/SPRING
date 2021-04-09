@@ -24,6 +24,7 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
@@ -55,23 +56,16 @@ public class MemberInsertController {
 	}
 
 	@RequestMapping("/member/memberInsert.do")
-	public String form(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String form() {
 		String view = "member/memberForm";
 		return view;
 	}
 
 	@RequestMapping(value = "/member/memberInsert.do", method = RequestMethod.POST)
-	public String process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String process(@ModelAttribute("member") MemberVO member, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-//		1. 요청 접수
-		MemberVO member = new MemberVO();
-		req.setAttribute("member", member);
-//		member.setMem_id(req.getParameter("mem_id"));
-		try {
-			BeanUtils.populate(member, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e); // e parameter를 꼭 넘겨야한다.
-		} // 속도가 느림
+////		1. 요청 접수
+
 //		2. 검증
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
