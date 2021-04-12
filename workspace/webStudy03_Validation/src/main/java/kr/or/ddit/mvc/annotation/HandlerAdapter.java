@@ -65,7 +65,7 @@ public class HandlerAdapter implements IHandlerAdapter {
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// handler의 access범위가 public 미만일 경우 | req, resp를 받지 않을 경우 |
 			throw new ServletException(e);
-		} catch (BadRequestException e) {
+		} catch (BadRequestException e) { //에러를 보내기 위해 response를 쓰지 않아도 됨
 			response.sendError(400, e.getMessage());
 			return null;
 		}

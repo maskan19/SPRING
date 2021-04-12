@@ -4,7 +4,7 @@
 
 	<select id="selectMemberForAuth" parameterType="string"
 		resultType="MemberVO">
-		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL
+		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL, MEM_ROLE
 		FROM MEMBER
 		WHERE MEM_ID = #{mem_id} AND MEM_DELETE IS NULL
 	</select>
@@ -34,7 +34,7 @@
 		INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
 		)
 		SELECT
-		MEM_ID, MEM_PASS, MEM_NAME,
+		MEM_ID, MEM_PASS, MEM_NAME, MEM_ROLE,
 		MEM_REGNO1, MEM_REGNO2,
 		TO_CHAR(MEM_BIR, 'YYYY-MM-DD') MEM_BIR,
 		MEM_ZIP, MEM_ADD1, MEM_ADD2,
@@ -79,7 +79,7 @@
 		MEM_MAIL, MEM_JOB, MEM_LIKE,
 		MEM_MEMORIAL,
 		MEM_MEMORIALDAY,
-		MEM_MILEAGE
+		MEM_MILEAGE, MEM_ROLE
 		) VALUES (
 		#{mem_id,jdbcType=VARCHAR}, #{mem_pass,jdbcType=VARCHAR}, #{mem_name,jdbcType=VARCHAR},
 		#{mem_regno1,jdbcType=VARCHAR}, #{mem_regno2,jdbcType=VARCHAR},
@@ -91,7 +91,7 @@
 		#{mem_like,jdbcType=VARCHAR},
 		#{mem_memorial,jdbcType=VARCHAR},
 		TO_DATE(#{mem_memorialday,jdbcType=DATE}, 'YYYY-MM-DD'),
-		3000
+		3000,'ROLE_USER'
 		)
 	</insert>
 	<delete id="deleteMember" parameterType="string">

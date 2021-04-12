@@ -52,6 +52,18 @@ public class LoginCheckController{
                logger.info("인증후 MemberVO : {}", member);
             view = "redirect:/";
             session.setAttribute("authMember", member);
+            
+            
+//            
+//            
+//            if("a001".equals(member.getMem_id())) {
+//            	session.setAttribute("role", "ROLE_ADMIN");
+//            }else {
+//            	session.setAttribute("role", "ROLE_USER");
+//            }
+//            
+//            
+            
             Cookie idCookie = new Cookie("idCookie", mem_id);
             idCookie.setPath(req.getContextPath());
             int maxAge = 0;
