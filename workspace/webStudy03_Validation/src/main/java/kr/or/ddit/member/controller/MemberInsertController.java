@@ -2,22 +2,14 @@ package kr.or.ddit.member.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,8 +20,11 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.MemberVO;
@@ -64,11 +59,22 @@ public class MemberInsertController {
 	}
 
 	@RequestMapping(value = "/member/memberInsert.do", method = RequestMethod.POST)
-	public String memberInsert(@ModelAttribute("member") MemberVO member, HttpServletRequest req, HttpServletResponse resp) {
+	public String memberInsert(@ModelAttribute("member") MemberVO member,
+			@RequestPart(value = "mem_image", required = false) MultipartFile mem_image, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
 
 //		2. 검증
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
+
+		if (mem_image != null && !mem_image.isEmpty()) {
+			String mime = mem_image.getContentType();
+			if (!mime.startsWith("image/")) {
+				throw new BadRequestException("이미지 파일만 사용할 수 있습니다.");
+			}
+			byte[] mem_img = mem_image.getBytes();
+			member.setMem_img(mem_img);
+		}
 
 		boolean valid = new CommonValidator<MemberVO>().validate(member, errors, InsertGroup.class);
 
@@ -82,7 +88,7 @@ public class MemberInsertController {
 				message = "아이디 중복";
 				break;
 			case OK: // redirect
-				view = "redirect:/login/loginForm";
+				view = "redirect:/login/loginForm.jsp";
 				break;
 			default:
 				message = "서버 오류, 잠시 뒤 다시 시도하세요.";

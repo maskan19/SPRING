@@ -20,13 +20,16 @@
 			<td><%=member.getMem_id()%></td>
 		</tr>
 		<tr>
-			<th>비밀번호</th>
-			<td><%=member.getMem_pass()%></td>
+			<th>프로필</th>
+			<td>
+			<img alt="" src="data:image/*;base64,<%=member.getBase64Image()%>">
+			</td>
 		</tr>
 		<tr>
 			<th>이름</th>
 			<td><%=member.getMem_name()%></td>
 		</tr>
+		
 		<tr>
 			<th>주민번호1</th>
 			<td><%=member.getMem_regno1()%></td>

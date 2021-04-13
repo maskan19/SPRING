@@ -11,6 +11,8 @@
 	<!-- file은 리퀘스트 바디(2진 데이터)로 보내져야함> post. -->
 	<input type="text" name="uploader" placeholder="업로더"/>
 	<input type="file" name="uploadFile1" accept="image/*"/>
+	<input type="file" name="uploadFile1" accept="image/*"/>
+	<input type="file" name="uploadFile2" accept="image/*"/>
 	<input type="file" name="uploadFile2" accept="image/*"/>
 	<button type="submit">업로드</button>
 </form>

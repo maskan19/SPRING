@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,9 @@ public class ProdVO implements Serializable {
 	private Integer prod_sale;
 	private String prod_outline;
 	private String prod_detail;
+	@NotBlank(groups=InsertGroup.class)
 	private String prod_img;
+	@Min(0)
 	private Integer prod_totalstock;
 	private String prod_insdate;
 	private Integer prod_properstock;

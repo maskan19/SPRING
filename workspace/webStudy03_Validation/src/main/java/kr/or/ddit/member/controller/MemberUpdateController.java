@@ -1,5 +1,6 @@
 package kr.or.ddit.member.controller;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,10 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.vo.MemberVO;
@@ -37,7 +41,9 @@ public class MemberUpdateController {
 	}
 
 	@RequestMapping(value = "/member/memberUpdate.do", method = RequestMethod.POST)
-	public String memberUpdate(@ModelAttribute("member") MemberVO member, HttpSession session, HttpServletRequest req) {
+	public String memberUpdate(@ModelAttribute("member") MemberVO member, 
+			@RequestPart(value="mem_image", required=false) MultipartFile mem_image,
+			HttpSession session, HttpServletRequest req) throws IOException {
 
 		addCommandAttribute(req);
 
@@ -45,6 +51,19 @@ public class MemberUpdateController {
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
 		member.setMem_id(authId);
+		
+		
+		
+		if(mem_image!=null&& !mem_image.isEmpty()) {
+			String mime = mem_image.getContentType();
+			if(!mime.startsWith("image/")) {
+				throw new BadRequestException("이미지 파일만 사용할 수 있습니다.");
+			}
+			byte[] mem_img = mem_image.getBytes();
+			member.setMem_img(mem_img);
+		}
+
+		
 //		2. 검증
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);

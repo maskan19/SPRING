@@ -28,7 +28,7 @@
    <jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" />
    <jsp:useBean id="errors" class="java.util.LinkedHashMap" scope="request" />
    <!-- 이렇게 하면 이제 우리가 nullpoint 신경쓸 필요 없다 -->
-   <form method="post" id="memberForm">
+   <form method="post" id="memberForm" enctype="multipart/form-data">
       <table>
       <%
          String command = (String)request.getAttribute("command");
@@ -56,6 +56,11 @@
          <tr>
             <th>이름</th>
             <td><input type="text" name="mem_name" value="<%=Objects.toString(member.getMem_name(), "") %>"/>
+            <span class="error"><%=Objects.toString(errors.get("mem_name"),"")%></span></td>
+         </tr>
+         <tr>
+            <th>프로필</th>
+            <td><input type="file" name="mem_image" accept="image/*"/>
             <span class="error"><%=Objects.toString(errors.get("mem_name"),"")%></span></td>
          </tr>
          <tr>

@@ -18,14 +18,14 @@
 	</context-param>
 
 	<!-- 필터체인 순서는 등록 순서와 일치 -->
-	<filter>
-		<filter-name>BlindFilter</filter-name>
-		<filter-class>kr.or.ddit.filter.BlindFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>BlindFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+<!-- 	<filter> -->
+<!-- 		<filter-name>BlindFilter</filter-name> -->
+<!-- 		<filter-class>kr.or.ddit.filter.BlindFilter</filter-class> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>BlindFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
 
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -41,30 +41,48 @@
 	</filter-mapping>
 
 	<filter>
-		<filter-name>AuthenticationFilter</filter-name>
-		<filter-class>kr.or.ddit.filter.security.AuthenticationFilter</filter-class>
-		<init-param>
-			<param-name>resourcePath</param-name>
-			<param-value>/kr/or/ddit/securedResources.properties</param-value>
-		</init-param>
-		<init-param>
-			<param-name>loginPage</param-name>
-			<param-value>/login/loginForm.jsp</param-value>
-		</init-param>
+		<filter-name>FileUploadRequestCheckFilter</filter-name>
+		<filter-class>kr.or.ddit.mvc.filter.FileUploadRequestCheckFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>AuthenticationFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<filter-name>FileUploadRequestCheckFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 
-	<filter>
-		<filter-name>AuthorizationFilter</filter-name>
-		<filter-class>kr.or.ddit.filter.security.AuthorizationFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>AuthorizationFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+<!-- 	<filter> -->
+<!-- 		<filter-name>AuthenticationFilter</filter-name> -->
+<!-- 		<filter-class>kr.or.ddit.filter.security.AuthenticationFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>resourcePath</param-name> -->
+<!-- 			<param-value>/kr/or/ddit/securedResources.properties</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>loginPage</param-name> -->
+<!-- 			<param-value>/login/loginForm.jsp</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>AuthenticationFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+
+<!-- 	<filter> -->
+<!-- 		<filter-name>AuthorizationFilter</filter-name> -->
+<!-- 		<filter-class>kr.or.ddit.filter.security.AuthorizationFilter</filter-class> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>AuthorizationFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+	
+<!-- 	<filter> -->
+<!-- 		<filter-name>RequestChangeFilter</filter-name> -->
+<!-- 		<filter-class>kr.or.ddit.filter.RequestChangeFilter</filter-class> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>RequestChangeFilter</filter-name> -->
+<!-- 		<url-pattern>*.do</url-pattern> -->
+<!-- 	</filter-mapping> -->
 
 	<!-- <filter> -->
 	<!-- <filter-name>FilterDesc</filter-name> -->
