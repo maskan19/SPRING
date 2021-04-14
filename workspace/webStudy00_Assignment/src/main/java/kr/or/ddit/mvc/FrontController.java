@@ -25,7 +25,7 @@ public class FrontController extends HttpServlet {
 		// TODO Auto-generated method stub
 		super.init(config);
 		String packageParam = config.getInitParameter("basePackages");
-		String[] basePackages = packageParam.split("\\s+");//공백이 하나 이상
+		String[] basePackages = packageParam.split("\\s+");// 공백이 하나 이상
 		handlerMapping = new HandlerMapping(basePackages);
 		handlerAdapter = new HandlerAdapter();
 		viewResolver = new ViewResolver();
@@ -36,8 +36,6 @@ public class FrontController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		req.setCharacterEncoding("UTF-8");
-
 		RequestMappingInfo mappingInfo = handlerMapping.findCommandHandler(req);
 
 		if (mappingInfo == null) {
@@ -47,7 +45,7 @@ public class FrontController extends HttpServlet {
 
 		String viewName = handlerAdapter.invokeHandler(mappingInfo, req, resp);
 		if (viewName == null) {
-			if(!resp.isCommitted())
+			if (!resp.isCommitted())
 				resp.sendError(500, "논리적인 뷰네임은 널일 수 없음");
 		} else {
 			viewResolver.viewResolve(viewName, req, resp);

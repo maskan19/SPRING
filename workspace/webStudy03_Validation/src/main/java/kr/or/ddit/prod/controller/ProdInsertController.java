@@ -52,8 +52,14 @@ public class ProdInsertController {
 		req.setAttribute("errors", errors);
 		
 		//파일 저장
+//		EventDrivenDevelopment/TestDrivenDevelopment 테스트에서 예상하는 결과대로 로직을 짜는 것
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		if(!saveFolder.exists()) {
+			saveFolder.mkdirs();
+		}
+		
+		
 		if (prod_image!=null &&!prod_image.isEmpty()) {
 			prod_image.saveTo(saveFolder);
 			prod.setProd_img(prod_image.getUniqueSaveName());

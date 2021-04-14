@@ -54,7 +54,7 @@ public class ProdUpdateController {
 
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
-		//파일 수정
+		// 파일 수정
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
 		if (prod_image != null && !prod_image.isEmpty()) {

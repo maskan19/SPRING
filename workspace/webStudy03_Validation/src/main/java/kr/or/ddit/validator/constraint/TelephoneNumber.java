@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy=TelephoneNumberValidator.class)
 public @interface TelephoneNumber {
-	String regexp() default "\\d{2,3} - \\d{3,4}-\\d{4}";
+	String regexp() default "\\d{2,3}-\\d{3,4}-\\d{4}";
 	String placeholder() default "000-0000-0000";
 	String message() default "{Message.kr.or.ddit.validator.constraint.TelephoneNumber}";
 	Class<?>[] groups() default {};

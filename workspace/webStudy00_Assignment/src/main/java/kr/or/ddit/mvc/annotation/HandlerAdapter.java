@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.IHandlerMethodArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttributeArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParamArgumentResolver;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPartArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ServletSpecArgumentResolver;
 
 public class HandlerAdapter implements IHandlerAdapter {
@@ -25,7 +27,13 @@ public class HandlerAdapter implements IHandlerAdapter {
 		argumentResolvers.add(new ServletSpecArgumentResolver());
 		argumentResolvers.add(new ModelAttributeArgumentResolver());
 		argumentResolvers.add(new RequestParamArgumentResolver());
+		argumentResolvers.add(new RequestPartArgumentResolver());
 	}
+	
+	public void addHandletMethodArgumentResolver(IHandlerMethodArgumentResolver...resolvers) {
+		argumentResolvers.addAll(Arrays.asList(resolvers));
+	}
+	
 
 	private IHandlerMethodArgumentResolver findArgumentResolver(Parameter parameter) {
 		IHandlerMethodArgumentResolver finded = null;
@@ -65,7 +73,7 @@ public class HandlerAdapter implements IHandlerAdapter {
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// handler의 access범위가 public 미만일 경우 | req, resp를 받지 않을 경우 |
 			throw new ServletException(e);
-		} catch (BadRequestException e) {
+		} catch (BadRequestException e) { //에러를 보내기 위해 response를 쓰지 않아도 됨
 			response.sendError(400, e.getMessage());
 			return null;
 		}

@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.Base64;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import kr.or.ddit.Constants;
 import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.validator.constraint.TelephoneNumber;
@@ -37,7 +41,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor // parameter없는 생성자
 @AllArgsConstructor // 모든 필드를 parameter로 하는 생성자
-public class MemberVO implements Serializable {
+public class MemberVO implements Serializable, HttpSessionBindingListener {
 //	public MemberVO() {
 //		super();
 //	}
@@ -95,6 +99,31 @@ public class MemberVO implements Serializable {
 		if (mem_img != null)
 			encoded = Base64.getEncoder().encodeToString(mem_img);
 		return encoded;
+	}
+
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+		//session scope에 저장될 때
+		if("authMember".equals(event.getName())){//누군가가 새로 로그인한 경우
+    		ServletContext session = event.getSession().getServletContext();
+    		
+    		Set<MemberVO> userList = (Set)session.getAttribute(Constants.USERLISTATTRNAME);
+    		userList.add(this);//직렬화가 되어있어야한다.
+    	};
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+		//session scope에서 삭제될 때
+		if("authMember".equals(event.getName())){//누군가가 새로 로그인한 경우
+    		ServletContext session = event.getSession().getServletContext();
+    		
+    		Set<MemberVO> userList = (Set)session.getAttribute(Constants.USERLISTATTRNAME);
+    		userList.remove(this);//직렬화가 되어있어야한다.
+    	};
+	}
+	public String getTest() {
+		return"test";
 	}
 
 }

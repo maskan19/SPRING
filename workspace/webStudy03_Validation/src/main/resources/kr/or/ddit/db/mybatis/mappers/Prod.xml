@@ -7,6 +7,9 @@
 			autoMapping="true">
 			<id property="buyer_id" column="BUYER_ID" />
 		</association>
+		<collection property="userList" javaType="java.util.Set" ofType="MemberVO" autoMapping="true">	
+			<id property="mem_id" column="MEM_ID"></id>
+		</collection>
 	</resultMap>
 	<sql id="fromFrag">
 		FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
@@ -67,7 +70,13 @@
 
 	<select id="selectProd" parameterType="string"
 		resultMap="prodMap">
-		SELECT
+		WITH CARTMEMBER AS(
+		SELECT DISTINCT
+		MEM_ID, MEM_NAME, MEM_HP, MEM_MAIL, CART_PROD
+		FROM CART INNER JOIN MEMBER ON(CART_MEMBER = MEM_ID)
+		)
+		
+		SELECT 
 		PROD_ID, PROD_NAME, PROD_LGU
 		, PROD_BUYER, PROD_COST,
 		PROD_PRICE
@@ -80,11 +89,11 @@
 		, LPROD_NM, BUYER_ID, BUYER_NAME, BUYER_ADD1
 		, BUYER_COMTEL,
 		BUYER_CHARGER
-		FROM PROD INNER JOIN LPROD ON (PROD_LGU =
-		LPROD_GU)
-		INNER
-		JOIN BUYER ON (PROD_BUYER = BUYER_ID)
-		WHERE PROD_ID = #{prod_id}
+        ,CARTMEMBER.*
+		FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+                                INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+                                LEFT OUTER JOIN CARTMEMBER ON (CART_PROD = PROD_ID)
+		WHERE PROD_ID = #{PROD_ID}
 	</select>
 	
 	<insert id="insertProd" parameterType="ProdVO">

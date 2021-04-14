@@ -62,6 +62,15 @@ String[] children = (String[])request.getAttribute("children");
 <input type="submit" value="전송" style = "background-color:pink;">
 </form>
 <div id="imageArea"></div>
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="uploadImage" />
+	<input type="submit" value="업로드" />
+</form>
+
+
+
+
+
 <script type="text/javascript">
 
 //   var select = document.querySelectio("#image");

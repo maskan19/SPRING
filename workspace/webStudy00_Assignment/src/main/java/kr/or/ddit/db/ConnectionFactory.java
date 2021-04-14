@@ -1,19 +1,13 @@
 package kr.or.ddit.db;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-
-import oracle.jdbc.pool.OracleDataSource;
 
 /**
  * Factory Object[Method] Pattern : 객체 생성을 전담하는 객체를 운영하는 구조.
