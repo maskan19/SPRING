@@ -71,8 +71,8 @@ public class BuyerListController {
 		return view;
 	}
 
-	@RequestMapping("/prod/prodView.do")
-	public String prodView(@RequestParam(value = "what", required = true, defaultValue = "") String buyer_id,
+	@RequestMapping("/buyer/buyerView.do")
+	public String prodView(@RequestParam(value = "where", required = true, defaultValue = "") String buyer_id,
 			HttpServletRequest req) {
 
 		BuyerVO buyer = service.retrieveBuyer(buyer_id);

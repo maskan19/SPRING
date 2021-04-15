@@ -15,18 +15,15 @@
 			<c:forEach var="lprod" items="${lprodList}">
 				<option value="${lprod.lprod_gu}">${lprod.lprod_nm}</option>
 			</c:forEach>
-		</select> 
-		
-		<select name="prod_buyer">
+		</select> <select name="prod_buyer">
 			<option value>거래처선택</option>
 			<c:forEach var="buyer" items="${buyerList }">
-				<option value="${buyer.buyer_id}" class="${buyer.buyer_lgu}">	${buyer.buyer_name}</option>
+				<option value="${buyer.buyer_id}" class="${buyer.buyer_lgu}">
+					${buyer.buyer_name}</option>
 			</c:forEach>
-		</select> 
-		<input type="text" name="prod_name" /> 
-		<input type="text" name="page" /> 
-		<input type="submit" value="검색" /> 
-		<input type="button" value="신규등록" id="newBtn" />
+		</select> <input type="text" name="prod_name" /> <input type="text"
+			name="page" /> <input type="submit" value="검색" /> <input
+			type="button" value="신규등록" id="newBtn" />
 	</form>
 	<table>
 		<thead>

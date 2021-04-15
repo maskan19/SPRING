@@ -12,6 +12,7 @@ import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.ProdVO;
 import kr.or.ddit.vo.SearchVO;
 
 @Controller
@@ -37,5 +38,14 @@ public class MemberListController {
 		req.setAttribute("pagingVO", pagingVO);
 
 		return "member/memberList";
+	}
+	
+	@RequestMapping("/member/memberView.do")
+	public String prodView(@RequestParam(value = "who", required = true, defaultValue = "") String mem_id,
+			HttpServletRequest req) {
+
+		MemberVO member = service.retrieveMember(mem_id);
+		req.setAttribute("member", member);
+		return "member/memberView";
 	}
 }

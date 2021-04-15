@@ -5,9 +5,30 @@
 		<id property="buyer_id" column="BUYER_ID" />
 	</resultMap>
 
-<select id="selectBuyer" parameterType="String" resultMap="buyerMap"></select>
+<select id="selectBuyer" parameterType="String" resultMap="buyerMap">
+SELECT
+    buyer_id,
+    buyer_name,
+    buyer_lgu,
+    buyer_bank,
+    buyer_bankno,
+    buyer_bankname,
+    buyer_zip,
+    buyer_add1,
+    buyer_add2,
+    buyer_comtel,
+    buyer_fax,
+    buyer_mail,
+    buyer_charger,
+    buyer_telext
+FROM
+    buyer
+</select>
 
-<select id="selectBuyerDetail" parameterType="String" resultMap="buyerMap"></select>
+<select id="selectBuyerDetail" parameterType="String" resultMap="buyerMap">
+
+
+</select>
 
 <select id="selectBuyerList" resultMap="buyerMap" parameterType="kr.or.ddit.vo.PagingVO"></select>
 

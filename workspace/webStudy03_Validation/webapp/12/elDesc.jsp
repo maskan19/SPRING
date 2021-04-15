@@ -103,12 +103,12 @@
 
 5. EL의 기본 객체 지원
 	1. scope: pageScope, requestScope, sessionScope, applicationScope
-	2. parameter: param(Map &gt; String, String &lt;), paramValues(Map &gt; String, String[] &lt;)
+	2. parameter: param(Map &lt; String, String &gt;), paramValues(Map &lt; String, String[] &gt;)
 	<a href="?param1=value1&param1=value2">파라미터 전달</a>쿼리스트링으로 겟방식으로 넘긴다.
 	<%=request.getParameter("param1") %> = ${param.param1 } = ${param["param1"] } = value1
 	<a href="?param10=value1&param10=value2">파라미터 전달</a>쿼리스트링으로 겟방식으로 넘긴다.
 	<%=request.getParameterValues("param10") %> = ${paramValues.param10}  = ${paramValues["param10"]}
-	3. header : header(Map &gt; String, String &lt;), headerValues(Map &gt; String, String[] &lt;)
+	3. header : header(Map &lt; String, String &gt;), headerValues(Map &lt; String, String[] &gt;)
 		user-agent값
 		<%=request.getHeader("user-agent") %> = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
 		\${header["user-agent"] } = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
@@ -128,7 +128,7 @@
 	\${initParam.contentFolder } = d:/contents
 	\${initParam["contentFolder"] } = d:/contents
 	
-	6. pageContext
+	6. pageContext: jsp의 기본 객체로 접근할 수 있다.
 	\${pageContext.request.contextPath } = /webStudy03_Validation
 
 \${applicationScope.sampleList } = [value10, value20, value30]

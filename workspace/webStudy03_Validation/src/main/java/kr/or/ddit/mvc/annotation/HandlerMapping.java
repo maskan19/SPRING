@@ -59,7 +59,7 @@ public class HandlerMapping implements IHandlerMapping {
 	@Override
 	public RequestMappingInfo findCommandHandler(HttpServletRequest req) {
 		String uri = req.getRequestURI();
-		uri = uri.substring(req.getContextPath().length()).split(";")[0];
+		uri = uri.substring(req.getContextPath().length()).split(";")[0];//세션이 붙었을 경우를 잘라버림
 		RequestMethod method = RequestMethod.valueOf(req.getMethod().toUpperCase());
 		RequestMappingCondition key = new RequestMappingCondition(uri, method);
 		return handlerMap.get(key); // MappingInfo return
