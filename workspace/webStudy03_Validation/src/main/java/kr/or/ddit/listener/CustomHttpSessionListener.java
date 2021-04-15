@@ -1,7 +1,5 @@
 package kr.or.ddit.listener;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -27,9 +25,10 @@ public class CustomHttpSessionListener implements HttpSessionListener{
 		HttpSession session = se.getSession();
 		logger.info("세션 생성 : {}", session.getId());
 		ServletContext application = session.getServletContext();
+		
 		int sessionCount = (Integer)application.getAttribute(Constants.SESSIONCOUNTATTRNAME);//객체 타입으로 캐스팅
 		application.setAttribute(Constants.SESSIONCOUNTATTRNAME, sessionCount+1);
-		logger.info("SESSIONCOUNTATTRNAME : {}", session.getAttribute(Constants.SESSIONCOUNTATTRNAME));
+		logger.info("SESSIONCOUNTATTRNAME : {}", application.getAttribute(Constants.SESSIONCOUNTATTRNAME));
 		
 		
 	}
@@ -40,7 +39,8 @@ public class CustomHttpSessionListener implements HttpSessionListener{
 		logger.info("세션 소멸 : {}", session.getId());
 		ServletContext application = session.getServletContext();
 		int sessionCount = (Integer)application.getAttribute(Constants.SESSIONCOUNTATTRNAME);//객체 타입으로 캐스팅
-		application.setAttribute(Constants.SESSIONCOUNTATTRNAME, sessionCount-1);
+//		application.setAttribute(Constants.SESSIONCOUNTATTRNAME, sessionCount-1);
+		
 		Set<String> userList = (Set<String>)application.getAttribute(Constants.USERLISTATTRNAME);
 		if(session.getAttribute("authMember")!=null) {
 			userList.remove(((MemberVO)session.getAttribute("authMember")).getMem_id());

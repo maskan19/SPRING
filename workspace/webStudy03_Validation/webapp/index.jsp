@@ -12,7 +12,9 @@
 </head>
 <body>
 <h4>Welcome Page</h4>
-누적 방문자 수 : <%=application.getAttribute(Constants.SESSIONCOUNTATTRNAME) %>
+
+<%-- <%=application.getAttribute(Constants.SESSIONCOUNTATTRNAME) %> --%>
+누적 방문자 수 : ${sessionCount }
 <br>
 접속 중인 방문자
 <ul>

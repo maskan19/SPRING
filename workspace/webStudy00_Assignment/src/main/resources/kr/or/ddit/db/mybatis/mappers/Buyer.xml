@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.buyer.dao.IBuyerDAO">
+<resultMap type="BuyerVO" id="buyerMap" autoMapping="true">
+		<id property="buyer_id" column="BUYER_ID" />
+	</resultMap>
+
+<select id="selectBuyer" parameterType="String" resultMap="buyerMap"></select>
+
+<select id="selectBuyerDetail" parameterType="String" resultMap="buyerMap"></select>
+
+<select id="selectBuyerList" resultMap="buyerMap" parameterType="kr.or.ddit.vo.PagingVO"></select>
+
+<select id="selectTotalRecord" resultType="int"  parameterType="PagingVO"></select>
+
+<insert id="insertBuyer" parameterType="BuyerVO"></insert>
+
+<update id="updateBuyer" parameterType="BuyerVO"></update>
+
+<update id="deleteBuyer" parameterType="String"></update>
+
+</mapper>
