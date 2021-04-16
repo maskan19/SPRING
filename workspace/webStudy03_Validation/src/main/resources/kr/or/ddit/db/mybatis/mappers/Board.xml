@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.board.dao.IBoardDAO"><!-- 네임스페이스를 인터페이스 주소로 -->
+	<resultMap type="BoardVO" id="boardMap" autoMapping="true">
+		<id property="bo_no" column="BO_NO" />
+
+		<collection property="attatchList" ofType="AttatchVO"
+			javaType="java.util.List" autoMapping="true">
+			<id property="att_no" column="ATT_NO" />
+		</collection>
+
+		<collection property="replyList" ofType="Reply2VO"
+			javaType="java.util.List" autoMapping="true">
+			<id property="rep_no" column="REP_NO" />
+		</collection>
+	</resultMap>
+	<sql id="searchFrag">
+		<trim prefix="WHERE" prefixOverrides="AND" suffixOverrides="OR">
+			BO_SORT = 1 OR 1 = 1
+			<if
+				test="searchMap!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.searchWord)">
+				<trim prefix="AND (" suffix=")">
+					<choose>
+						<when test="searchMap.searchType eq 'title'">
+							INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'writer'">
+							INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'content'">
+							INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'type'">
+						</when>
+						<otherwise>
+							INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+							OR
+							INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+							OR
+							INSTR(BO_CONTENT,
+							#{searchMap.searchWord}) > 0
+							OR
+							BO_TYPE = #{searchMap.searchWord}
+						</otherwise>
+					</choose>
+				</trim>
+			</if>
+			<trim prefix="AND (" suffix=")" prefixOverrides="AND">
+				<if
+					test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.minDate)">
+					AND BO_DATE >= TO_DATE(#{searchMap.minDate}, 'YYYY-MM-DD')
+				</if>
+				<if
+					test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.maxDate)">
+					<![CDATA[
+					AND BO_DATE <= TO_DATE(#{searchMap.maxDate}, 'YYYY-MM-DD')
+					]]>
+				</if>
+			</trim>
+		</trim>
+	</sql>
+	<select id="selectBoardList" resultMap="boardMap"
+		parameterType="PagingVO">
+		SELECT B.*
+		FROM(
+		SELECT ROWNUM-3 RNUM , A.*
+		FROM(
+		SELECT BO_SORT, BO_TYPE,
+		BO_NO, BO_TITLE, BO_WRITER, BO_PASS,
+		BO_CONTENT, BO_DATE, BO_HIT,
+		BO_REC, BO_REP, BO_SEC, BO_PARENT
+		FROM BOARDVIEW
+		<include refid="searchFrag"></include>
+		ORDER BY BO_SORT ASC,BO_DATE DESC
+		) A
+		) B
+		WHERE BO_SORT = 1 OR RNUM
+		BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+	<select id="selectBoardCount" resultType="Integer"
+		parameterType="PagingVO">
+		SELECT COUNT(*)
+		FROM BOARDVIEW
+		<include refid="searchFrag"></include>
+	</select>
+
+	<select id="selectBoard" parameterType="BoardVO"
+		resultMap="boardMap">
+		SELECT BOARDVIEW.*, REPLY2.*, ATTATCH.*
+		FROM BOARDVIEW
+		LEFT OUTER JOIN REPLY2 ON (BOARDVIEW.BO_NO = REPLY2.BO_NO)
+		LEFT OUTER JOIN ATTATCH ON (BOARDVIEW.BO_NO = ATTATCH.BO_NO)
+		WHERE BOARDVIEW.BO_NO = #{bo_no}
+	</select>
+
+
+
+</mapper>

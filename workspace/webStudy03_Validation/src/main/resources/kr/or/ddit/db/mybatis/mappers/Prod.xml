@@ -52,7 +52,7 @@
 				PROD_COST,
 				PROD_PRICE,
 				PROD_MILEAGE
-				<include refid="fromFrag"></include>
+		<include refid="fromFrag"></include>
 <!-- 		<where> ==<trim prefix="where"> -->
 		<include refid="searchFrag"></include>
 			) A
