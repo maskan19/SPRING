@@ -2,6 +2,8 @@ package kr.or.ddit.board.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
@@ -14,9 +16,10 @@ public interface IBoardDAO {
 	/**
 	 * 
 	 * @param board 입력할 BoardVO
+	 * @param session TODO
 	 * @return 입력 성공시 1
 	 */
-	public int insertBoard(BoardVO board);
+	public int insertBoard(BoardVO board, SqlSession session);
 	
 	/**
 	 * 
@@ -42,14 +45,15 @@ public interface IBoardDAO {
 	/**
 	 * 
 	 * @param boardVO
+	 * @param session TODO
 	 * @return  수정 성공시 1
 	 */
-	public int updateBoard(BoardVO boardVO);
+	public int updateBoard(BoardVO boardVO, SqlSession session);
 	
 	/**
 	 * 
-	 * @param search 검색할 BoardVO 객체
+	 * @param boardVO 검색할 BoardVO 객체
 	 * @return 삭제 성공시 1
 	 */
-	public int deleteBoard(BoardVO search);
+	public int deleteBoard(BoardVO boardVO, SqlSession session);
 }

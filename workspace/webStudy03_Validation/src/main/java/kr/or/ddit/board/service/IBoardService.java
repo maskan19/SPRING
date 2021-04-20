@@ -38,4 +38,5 @@ public interface IBoardService {
 	 */
 	public AttatchVO download(int att_no);
 	
+	public boolean boardAuthenticate(BoardVO search);
 }

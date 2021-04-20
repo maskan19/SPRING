@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<c:if test="${not empty message }">
+	<script type="text/javascript">
+		alert("${message}");
+	</script>
+	<c:remove var="message" scope="session"/>
+</c:if>
 </head>
 <body>
 <h4>게시글 목록 조회</h4>
@@ -33,9 +39,18 @@
 						<c:url value="/board/boardView.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }" />
 						</c:url>
-						<a href="${viewURL }"  data-toggle="popover" title="Popover title" >
-						${board.bo_title }
-						</a>
+						<c:choose>
+							<c:when test="${board.bo_sec eq 'Y' }">
+								<a class="secret" href="${viewURL }">
+									${board.bo_title }
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a class="nonsecret" href="${viewURL }"  data-toggle="popover" title="Popover title" >
+									${board.bo_title }
+								</a>
+							</c:otherwise>
+						</c:choose>
 					</td>
 					<td>${board.bo_writer }</td>
 					<td>${board.bo_date }</td>
@@ -65,7 +80,7 @@
 				</form>
 				<div id="searchUI" class="form-inline d-flex justify-content-center">
 					<select name="searchType" class="form-control mr-2">
-						<option value>전체</option>
+						<option >전체</option>
 						<option value="title">제목</option>
 						<option value="writer">작성자</option>
 						<option value="content">내용</option>
@@ -74,7 +89,13 @@
 					<input class="form-control mr-2" type="text" name="searchWord" value="${pagingVO.searchMap.searchWord }"/>
 					<input class="form-control mr-2" type="date" name="minDate" value="${pagingVO.searchMap.minDate }" />
 					<input class="form-control mr-2" type="date" name="maxDate" value="${pagingVO.searchMap.maxDate }"/>
-					<input class="btn btn-primary" id="searchBtn" type="button" value="검색" />
+					<input class="btn btn-primary mr-2" id="searchBtn" type="button" value="검색" />
+					<input class="goBtn btn btn-success" type="button" value="새글쓰기" 
+						data-gopage="<c:url value='/board/boardInsert.do'/>"
+					/>
+					
+					<input type="button" value="공지글쓰기" onclick="location.href='${cPath }/board/noticeInsert.do';">
+					
 				</div>
 				<div id="pagingArea" class="d-flex justify-content-center">
 					${pagingVO.pagingHTMLBS }
@@ -84,6 +105,11 @@
 	</tfoot>
 </table>
 <script type="text/javascript">
+	$(".goBtn").on("click", function(){
+		let url = $(this).data("gopage");
+		if(url)
+			location.href = url;
+	});
 	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.searchMap.searchType }");
@@ -108,7 +134,7 @@
 	});
 	
 	$(function () {
-		$("#listBody a").hover(function(){
+		$("#listBody a.nonsecret").hover(function(){
 			$(this).popover({
 				html:true
 				, content:function(){
@@ -141,3 +167,13 @@
 <jsp:include page="/includee/postScript.jsp" />
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+

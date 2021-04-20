@@ -12,7 +12,7 @@ import kr.or.ddit.vo.PagingVO;
 public class BoardDAOImpl implements IBoardDAO {
 
 	private static BoardDAOImpl self;
-	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
+	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();//새로운 트랜잭션으로 간주된다.
 
 	private void BoardDAOImpl() {
 	}
@@ -23,13 +23,8 @@ public class BoardDAOImpl implements IBoardDAO {
 	}
 
 	@Override
-	public int insertBoard(BoardVO board) {
-		try (SqlSession session = sessionFactory.openSession()) {
-			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			int cnt = mapper.insertBoard(board);
-			session.commit();
-			return cnt;
-		}
+	public int insertBoard(BoardVO board, SqlSession session) {
+		return session.insert("kr.or.ddit.board.dao.IBoardDAO.insertBoard",board);
 	}
 
 	@Override
@@ -57,23 +52,13 @@ public class BoardDAOImpl implements IBoardDAO {
 	}
 
 	@Override
-	public int updateBoard(BoardVO boardVO) {
-		try (SqlSession session = sessionFactory.openSession()) {
-			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			int cnt = mapper.updateBoard(boardVO);
-			session.commit();
-			return cnt;
-		}
+	public int updateBoard(BoardVO boardVO, SqlSession session) {
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.updateBoard", boardVO);
 	}
 
 	@Override
-	public int deleteBoard(BoardVO search) {
-		try (SqlSession session = sessionFactory.openSession()) {
-			IBoardDAO mapper = session.getMapper(IBoardDAO.class);
-			int cnt = mapper.deleteBoard(search);
-			session.commit();
-			return cnt;
-		}
+	public int deleteBoard(BoardVO boardVO, SqlSession session) {
+		return session.update("kr.or.ddit.board.dao.IBoardDAO.deleteBoard", boardVO);
 	}
 
 }
