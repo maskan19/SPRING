@@ -92,17 +92,6 @@ public class MultipartFile {
 		adaptee.write(saveFile.getAbsolutePath());// 파일의 경로를 포함한 전체 quailifiedName을 주어야함
 	}
 
-//	/**
-//	 * 
-//	 * @param saveFolder saveFolder에 uniqueSaveName으로 저장
-//	 * 
-//	 */
-//	public void deleteAt(File saveFolder, String fileName) throws IOException {
-//		File deleteFile = new File(saveFolder, fileName);
-//		System.out.println("multipart");
-//		deleteFile.delete();
-//	}
-
 	public boolean isEmpty() {
 		return empty;
 	}

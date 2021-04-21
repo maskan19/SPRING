@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import kr.or.ddit.validator.BoardInsertGroup;
+import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.UpdateGroup;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,28 +19,28 @@ import lombok.ToString;
 
 /**
  * 
- * 공지글 /게시글을 공통으로 관리할  domain layer
+ * 공지글 /게시글을 공통으로 관리할 domain layer
  * 
  */
 @Data
-@EqualsAndHashCode(of="bo_no") //bo_no가 같으면 같다고 하자
-@ToString(exclude= {"attatchList", "replyList"})
+@EqualsAndHashCode(of = "bo_no") // bo_no가 같으면 같다고 하자
+@ToString(exclude = { "attatchList", "replyList" })
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BoardVO implements Serializable{
+public class BoardVO implements Serializable {
 	private Integer bo_sort;
 	@NotBlank
 	private String bo_type;
-	
-	@NotNull(groups=UpdateGroup.class)
-	@Min(value=1, groups=UpdateGroup.class)
+
+	@NotNull(groups = { UpdateGroup.class, DeleteGroup.class })
+	@Min(value = 1, groups = { UpdateGroup.class, DeleteGroup.class })
 	private Integer bo_no;
 	@NotBlank
 	private String bo_title;
-	@NotBlank(groups=BoardInsertGroup.class)
+	@NotBlank(groups = { BoardInsertGroup.class, UpdateGroup.class })
 	private String bo_writer;
-	@NotBlank(groups=BoardInsertGroup.class)
+	@NotBlank(groups = { BoardInsertGroup.class, UpdateGroup.class, DeleteGroup.class })
 	private String bo_pass;
 	private String bo_content;
 	private String bo_date;
@@ -47,11 +48,13 @@ public class BoardVO implements Serializable{
 	private Integer bo_rec;
 	private Integer bo_rep;
 	private String bo_sec;
-	private Integer bo_parent;
-	
+	private Integer bo_parent;	
+
 	private int startAttNo;
 //has many 관계
 	private List<AttatchVO> attatchList;
 	private int[] removeList;
 	private List<Reply2VO> replyList;
+
+	private String thumbnail;
 }

@@ -66,10 +66,7 @@
 					<input class="form-control mr-2" type="file" name="bo_files">
 					<span class="plusBtn btn btn-secondary mr-2">+</span>
 					 --%>
-					
-					
-					
-					
+										
 					<c:forEach items="${board.attatchList }"  var="attatch">
                     <div class="tel__input">
                       <label>기존 첨부 파일</label>
@@ -87,10 +84,6 @@
                     </div>
                     <input type="hidden" name="post_cont" id="post_cont">
 <!-- 				</p> -->
-					
-					
-					
-					
 					
 			</div>
 		</td>
@@ -116,7 +109,11 @@
 		<td colspan="2">
 			<div class="d-flex justify-content-center">
 				<button type="submit" class="btn btn-success mr-2">저장</button>
-				<button type="reset" class="btn btn-warning mr-2">취소</button>
+				<c:url value="/board/boardView.do" var="viewURL">
+							<c:param name="what" value="${board.bo_no }" />
+				</c:url>
+				
+				<button type="reset" class="goBtn btn btn-warning mr-2" data-gopage="${viewURL }">취소</button>
 				<button type="button" class="goBtn btn btn-primary mr-2" 	data-gopage="<c:url value='/board/boardList.do'/>">목록으로</button>
 			</div>
 		</td>

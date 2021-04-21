@@ -58,7 +58,7 @@ public class BoardDAOImpl implements IBoardDAO {
 
 	@Override
 	public int deleteBoard(BoardVO boardVO, SqlSession session) {
-		return session.update("kr.or.ddit.board.dao.IBoardDAO.deleteBoard", boardVO);
+		return session.delete("kr.or.ddit.board.dao.IBoardDAO.deleteBoard", boardVO);
 	}
 
 }

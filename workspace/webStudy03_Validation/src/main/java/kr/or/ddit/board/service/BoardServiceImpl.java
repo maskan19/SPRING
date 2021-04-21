@@ -3,7 +3,12 @@ package kr.or.ddit.board.service;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -54,14 +59,14 @@ public class BoardServiceImpl implements IBoardService {
 		}
 	}
 
-	private int getFiles(BoardVO board) {
-		int cnt = 0;
-		List<AttatchVO> attatches = board.getAttatchList();
-		for (AttatchVO attatch : attatches) {
-
-		}
-		return cnt;
-	}
+//	private int getFiles(BoardVO board) {
+//		int cnt = 0;
+//		List<AttatchVO> attatches = board.getAttatchList();
+//		for (AttatchVO attatch : attatches) {
+//
+//		}
+//		return cnt;
+//	}
 
 	private int deleteAttatch(BoardVO boardVO, SqlSession session) {
 		if (!saveFolder.exists()) {
@@ -147,18 +152,19 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public ServiceResult modifyBoard(BoardVO boardVO) {
-		ServiceResult result = ServiceResult.FAIL;
+		ServiceResult result = ServiceResult.INVALIDPASSWORD;
 		try(
 				SqlSession session = sessionFactory.openSession(false);
 				){
 			encodePassword(boardVO);
 			int cnt = boardDAO.updateBoard(boardVO, session);
 			if (cnt > 0) {
-				cnt += deleteAttatch(boardVO, session);
 				cnt += processes(boardVO, session);
-				if (cnt > 0)
+				cnt += deleteAttatch(boardVO, session);
+				if (cnt > 0) {
 					result = ServiceResult.OK;
-				session.commit();
+					session.commit();
+				}
 			}
 			
 		}
@@ -171,15 +177,42 @@ public class BoardServiceImpl implements IBoardService {
 		try(
 				SqlSession session = sessionFactory.openSession(false);
 				){
-		if (boardDAO.deleteBoard(boardVO, session) > 0)
-			result = ServiceResult.OK;
+			BoardVO savedBoard = boardDAO.selectBoard(boardVO);
+			String savedPass = savedBoard.getBo_pass();
+			encodePassword(boardVO); 
+			String inputPass = boardVO.getBo_pass();
+			// 인증
+			if(savedPass.equals(inputPass)) {
+				// 첨부파일 전체 삭제
+				List<AttatchVO> attatchList 	= savedBoard.getAttatchList();
+				if(attatchList.size()>0) {
+					int[] delAttNos = new int[attatchList.size()];
+					boardVO.setRemoveList(delAttNos);
+					for(int i = 0; i < delAttNos.length; i++) {
+						delAttNos[i] = 
+								attatchList.get(i).getAtt_no();
+					}	
+					deleteAttatch(boardVO, session);
+				}// if(attatchList.size) end
+				// 게시글 삭제
+				int cnt = boardDAO.deleteBoard(boardVO, session);
+				if(cnt>0) {
+					result = ServiceResult.OK;
+					session.commit();
+				}
+			}else {
+				result = ServiceResult.INVALIDPASSWORD;
+			}
 		}
 		return result;
 	}
 
 	@Override
 	public AttatchVO download(int att_no) {
-		return attDAO.selectAttatch(att_no);
+		AttatchVO attatch = attDAO.selectAttatch(att_no);
+		if(attatch==null)
+			throw new CustomException(att_no + "에 해당하는 파일이 없음.");
+		return attatch;
 	}
 
 	@Override
@@ -191,4 +224,14 @@ public class BoardServiceImpl implements IBoardService {
 		return savedPass.equals(inputPass);
 	}
 
+	
+    public String solution(String[] participant, String[] completion) {
+    	String answer = "";
+        List<String> com = new ArrayList<>(Arrays.asList(participant));
+        for(String person : completion) {
+        	com.remove(person);
+        }
+        answer = com.get(0);
+        return answer;
+    }
 }
