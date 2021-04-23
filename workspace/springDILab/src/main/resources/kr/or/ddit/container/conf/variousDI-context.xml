@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true"
+	
+	>
+
+<bean depends-on="vo2" lazy-init="true"  id="vo1" class="kr.or.ddit.container.various.VariousDIVO"
+p:str="later"
+p:number="2"
+p:dbNumber="0.2"
+p:boolData="false"
+p:ch="b"
+p:cpr="classpath:kr/or/ddit/container/conf/spring-container.xml"
+p:fsr="file://d:/contents/spongebob.png"
+p:urlr="https://pbs.twimg.com/profile_images/1195710944908738560/WQBgNN1Q_400x400.jpg"
+>
+</bean>
+
+<bean id="vo2" class="kr.or.ddit.container.various.VariousDIVO"
+c:str="original"
+c:number="1"
+c:dbNumber="0.1"
+c:boolData="true"
+c:ch="a"
+c:cpr="classpath:log4j2.xml"
+c:fsr="file://d:/contents/오래된 노래_utf8.txt"
+c:urlr="https://www.google.com/logos/doodles/2021/earth-day-2021-6753651837108909-vacta.gif"
+>
+</bean>
+
+
+</beans>
