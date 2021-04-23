@@ -5,19 +5,28 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-<!-- 스프링은 기본적으로 어노테이션이 비활성화 상태 -->
-<!-- 자동으로 등록할 것 -->
-<!-- 어노테이션이 사용될 수 있도록 포스트 어쩌고 작업중 -->
-<context:annotation-config >
+	<!-- 스프링은 기본적으로 어노테이션이 비활성화 상태 -->
+	<!-- 자동으로 등록할 것 -->
+	<!-- 어노테이션이 사용될 수 있도록 포스트 어쩌고 작업중 -->
 
 
+	<!-- <context:annotation-config /> -->
+	<!-- 빈으로 등록되는 어노테이션 -->
+	<!-- @Component :범용 빈을 등록 -->
+	<!-- @Repository : persistence layer 빈 -->
+	<!-- @Service : business logic layer 빈 -->
+	<!-- @Controller : controller layer -->
+	<!-- @RestController : controller layer -->
+	<!-- @Configuration -->
+	<!-- @ControllerAdvice : controller layer -->
+	<!-- auto wiring 어노테이션 -->
+	<!-- @AutoWired -->
+	<!-- @Inject : 빈의 type을 기준으로 검색하고 주입. -->
+	<!-- @Resource : 빈검색 기준을 명시할 수 있음. -->
+	<!-- @Required :필수 주입 명시 , setter injection -->
 
-
-<!-- 	base-package 이하의 것들을 모두 검색 -->
-	<context:component-scan base-package="kr.or.ddit.container.auto">
-	</context:component-scan>
-
-</context:annotation-config>
-
+	<!-- base-package 이하의 것들을 모두 검색 -->
+	<context:component-scan
+		base-package="kr.or.ddit.container.auto"></context:component-scan>
 
 </beans>

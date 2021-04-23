@@ -1,11 +1,13 @@
 package kr.or.ddit.container.auto.dao;
 
-public interface SampleDAOImpl extends ISampleDAO {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class SampleDAOImpl implements ISampleDAO {
 
 	@Override
-	default String selectData(String pk) {
-		// TODO Auto-generated method stub
-		return "조회된" +pk+"데이터";
+	public String selectData(String pk) {
+		return "조회된 raw data";
 	}
 
 }

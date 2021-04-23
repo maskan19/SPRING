@@ -1,10 +1,15 @@
 package kr.or.ddit.example.service;
 
-import kr.or.ddit.example.dao.ExampleDAOFactory;
-import kr.or.ddit.example.dao.ExampleDAO_MySql;
-import kr.or.ddit.example.dao.ExampleDAO_Oracle;
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import kr.or.ddit.example.dao.IExampleDAO;
 
+@Service
+@Scope("prototype")
 public class ExampleServiceImpl implements IExampleService {
 
 //	1. new 키워드로 인스턴스 직접 생성
@@ -22,6 +27,9 @@ public class ExampleServiceImpl implements IExampleService {
 		System.out.println(getClass().getSimpleName() + "객체 생성-기본생성자");
 	}
 
+	@Resource(name="mySql")
+//	@Inject
+	@Required
 	public void setDao(IExampleDAO dao) {
 		this.dao = dao;
 		System.out.println(getClass().getSimpleName() + "에서 setter injection 받음");
