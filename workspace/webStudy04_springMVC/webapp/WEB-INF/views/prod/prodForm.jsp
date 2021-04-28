@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<script type="text/javascript" src="${cPath }/js/ckeditor/ckeditor.js"></script>
 <c:if test="${not empty message }">
 	<script type="text/javascript">
 		alert("${message }");
@@ -16,18 +17,20 @@
 <body>
 <form method="post" enctype="multipart/form-data">
 	<input type="hidden" name="prod_id" value="${prod.prod_id }" />	
-	<table>
+	<table class="table table-bordered">
 		<tr>
 			<th>상품명</th>
 			<td><input type="text" name="prod_name" required
+				class="form-control"
 				value="${prod.prod_name }" />
-				<span class="error">${errors["prod_name"] }</span></td>
+				<span class="error">${errors["prod_name"] }</span>
+			</td>
 		</tr>
 <!-- 		===================== -->
 		<tr>
 			<th>분류코드</th>
 			<td>
-				<select name="prod_lgu">
+				<select name="prod_lgu" class="form-control">
 					<option value>상품분류</option>
 					<c:forEach items="${lprodList }" var="lprod">
 						<c:set var="selected" 
@@ -37,12 +40,13 @@
 						</option>
 					</c:forEach>
 				</select>
-				<span class="error">${errors["prod_lgu"] }</span></td>
+				<span class="error">${errors["prod_lgu"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>거래처</th>
 			<td>
-			<select name="prod_buyer">
+			<select name="prod_buyer" class="form-control">
 				<option value>거래처선택</option>
 				<c:forEach items="${buyerList }" var="buyer">
 					<c:set var="selected" 
@@ -52,108 +56,159 @@
 					</option>
 				</c:forEach>
 			</select>
-				<span class="error">${errors["prod_buyer"] }</span></td>
+			<span class="error">${errors["prod_buyer"] }</span>
+			</td>
 		</tr>
 <!-- 		===================== -->
 		<tr>
 			<th>구매가</th>
-			<td><input type="number" name="prod_cost" required
-				value="${prod.prod_cost }" />
-				<span class="error">${errors["prod_cost"] }</span></td>
+			<td>
+				<input type="number" name="prod_cost" required
+					class="form-control"
+					value="${prod.prod_cost }" />
+					<span class="error">${errors["prod_cost"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>판매가</th>
-			<td><input type="number" name="prod_price" required
-				value="${prod.prod_price }" />
-				<span class="error">${errors["prod_price"] }</span></td>
+			<td>
+				<input type="number" name="prod_price" required
+					class="form-control"
+					value="${prod.prod_price }" />
+				<span class="error">${errors["prod_price"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>세일가</th>
-			<td><input type="number" name="prod_sale" required
-				value="${prod.prod_sale }" />
-				<span class="error">${errors["prod_sale"] }</span></td>
+			<td>
+				<input type="number" name="prod_sale" required
+					class="form-control"
+					value="${prod.prod_sale }" />
+					<span class="error">${errors["prod_sale"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>상품정보</th>
-			<td><input type="text" name="prod_outline" required
-				value="${prod.prod_outline }" />
-				<span class="error">${errors["prod_outline"] }</span></td>
+			<td>
+				<input type="text" name="prod_outline" required
+					class="form-control"
+					value="${prod.prod_outline }" />
+				<span class="error">${errors["prod_outline"] }</span>
+				
+				</td>
 		</tr>
 		<tr>
 			<th>상세정보</th>
-			<td><input type="text" name="prod_detail"
-				value="${prod.prod_detail }" />
-				<span class="error">${errors["prod_detail"] }</span></td>
+			<td>
+				<textarea name="prod_detail" id="prod_detail" >${prod.prod_detail }</textarea>
+				<span class="error">${errors["prod_detail"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>이미지</th>
 			<td>
-				<input type="file" name="prod_image" />
-				<span class="error">${errors["prod_img"] }</span></td>
+				<input type="file" name="prod_image" class="form-control"/>
+				<span class="error">${errors["prod_img"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>재고</th>
-			<td><input type="number" name="prod_totalstock" required
-				value="${prod.prod_totalstock }" />
-				<span class="error">${errors["prod_totalstock"] }</span></td>
+			<td>
+				<input type="number" name="prod_totalstock" required
+					class="form-control"
+					value="${prod.prod_totalstock }" />
+				<span class="error">${errors["prod_totalstock"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>적정재고</th>
-			<td><input type="number" name="prod_properstock" required
-				value="${prod.prod_properstock }" />
-				<span class="error">${errors["prod_properstock"] }</span></td>
+			<td>
+				<input type="number" name="prod_properstock" required
+					class="form-control"
+					value="${prod.prod_properstock }" />
+				<span class="error">${errors["prod_properstock"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>크기</th>
-			<td><input type="text" name="prod_size"
-				value="${prod.prod_size }" />
-				<span class="error">${errors["prod_size"] }</span></td>
+			<td>
+				<input type="text" name="prod_size"
+					class="form-control"
+					value="${prod.prod_size }" />
+				<span class="error">${errors["prod_size"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>색상</th>
-			<td><input type="text" name="prod_color"
-				value="${prod.prod_color }" />
-				<span class="error">${errors["prod_color"] }</span></td>
+			<td>
+				<input type="text" name="prod_color"
+					class="form-control"
+					value="${prod.prod_color }" />
+				<span class="error">${errors["prod_color"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>배송방법</th>
-			<td><input type="text" name="prod_delivery"
-				value="${prod.prod_delivery }" />
-				<span class="error">${errors["prod_delivery"] }</span></td>
+			<td>
+				<input type="text" name="prod_delivery"
+					class="form-control"
+					value="${prod.prod_delivery }" />
+				<span class="error">${errors["prod_delivery"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>단위</th>
-			<td><input type="text" name="prod_unit"
-				value="${prod.prod_unit }" />
-				<span class="error">${errors["prod_unit"] }</span></td>
+			<td>
+				<input type="text" name="prod_unit"
+					class="form-control"
+					value="${prod.prod_unit }" />
+				<span class="error">${errors["prod_unit"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>입고량</th>
-			<td><input type="number" name="prod_qtyin"
-				value="${prod.prod_qtyin }" />
-				<span class="error">${errors["prod_qtyin"] }</span></td>
+			<td>
+				<input type="number" name="prod_qtyin"
+					class="form-control"
+					value="${prod.prod_qtyin }" />
+				<span class="error">${errors["prod_qtyin"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<th>판매량</th>
 			<td><input type="number" name="prod_qtysale"
-				value="${prod.prod_qtysale }" />
+					class="form-control"
+					value="${prod.prod_qtysale }" />
 				<span class="error">${errors["prod_qtysale"] }</span></td>
 		</tr>
 		<tr>
 			<th>마일리지</th>
-			<td><input type="number" name="prod_mileage"
-				value="${prod.prod_mileage }" />
-				<span class="error">${errors["prod_mileage"] }</span></td>
+			<td>
+				<input type="number" name="prod_mileage"
+					class="form-control"
+					value="${prod.prod_mileage }" />
+				<span class="error">${errors["prod_mileage"] }</span>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" value="전송" />
-				<input type="reset" value="취소" />
+				<input type="submit" value="전송" class="btn btn-primary"/>
+				<input type="reset" value="취소" class="btn btn-warning"/>
+				<input type="button" value="목록으로"
+					class="btn btn-secondary goBtn"
+					data-gopage="${cPath }/prod/prodList.do"
+				/>
 			</td>
 		</tr>
 	</table>
 </form>	
 	<script type="text/javascript">
+		$(".goBtn").on("click", function(){
+			let url = $(this).data("gopage");
+			if(url)
+				location.href = url;
+		});
+		CKEDITOR.replace("prod_detail");
 		let prod_buyerTag =	$("[name='prod_buyer']").val("${prod.prod_buyer }");
 		$("[name='prod_lgu']").on("change", function(){
 			let selectedLgu = $(this).val();

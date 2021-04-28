@@ -2,20 +2,24 @@ package kr.or.ddit.member.service;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.inject.Inject;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.dao.IMemberDAO;
-import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.utils.CryptoUtil;
 import kr.or.ddit.vo.MemberVO;
 
+@Service
 public class AuthenticateServiceImpl implements IAuthenticateService {
 	private static final Logger logger =
 			LoggerFactory.getLogger(AuthenticateServiceImpl.class);
-	private IMemberDAO dao = MemberDAOImpl.getInstance();
+	@Inject
+	private IMemberDAO dao;
 	
 	@Override
 	public ServiceResult authenticate(MemberVO member) {

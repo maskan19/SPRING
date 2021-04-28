@@ -1,36 +1,26 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
-import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.mvc.annotation.Controller;
-import kr.or.ddit.mvc.annotation.RequestMapping;
-import kr.or.ddit.mvc.annotation.RequestMethod;
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
-import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
-import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
-import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberInsertController{
-	private IMemberService service = new MemberServiceImpl();
+	@Inject
+	private IMemberService service;
 
 	@RequestMapping("/member/memberInsert.do")
 	public String form(){
@@ -39,33 +29,12 @@ public class MemberInsertController{
 
 	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
 	public String process(
-			@ModelAttribute("member") MemberVO member
-			, @RequestPart(value="mem_image", required=false) MultipartFile mem_image
-			, HttpServletRequest req) throws IOException {
-//		Locale.setDefault(Locale.ENGLISH);
-//		1. 요청 접수
-
-		if(mem_image!=null && !mem_image.isEmpty()) {
-			String mime = mem_image.getContentType();
-			if(!mime.startsWith("image/")) {
-				throw new BadRequestException("이미지 이외의 프로필은 처리 불가.");
-			}
-			byte[] mem_img = mem_image.getBytes();
-			member.setMem_img(mem_img);
-		}	
-//		2. 검증
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		req.setAttribute("errors", errors);
-		
-		boolean valid = 
-				new CommonValidator<MemberVO>()
-						.validate(member, errors, InsertGroup.class);
-		
-//		boolean valid = validate(member, errors);
-		
+			@Validated(InsertGroup.class) @ModelAttribute("member") MemberVO member
+			, BindingResult errors
+			, Model model) throws IOException {
 		String view = null;
 		String message = null;
-		if (valid) {
+		if (!errors.hasErrors()) {
 			ServiceResult result = service.createMember(member);
 			switch (result) {
 			case PKDUPLICATED:
@@ -85,7 +54,7 @@ public class MemberInsertController{
 			view = "member/memberForm";
 		}
 
-		req.setAttribute("message", message);
+		model.addAttribute("message", message);
 
 		return view;
 	}

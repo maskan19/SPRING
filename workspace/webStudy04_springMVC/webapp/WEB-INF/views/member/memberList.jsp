@@ -1,16 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp" />
-</head>
-<body>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+
 <h4>회원 목록 조회</h4>
-<table>
+<table class="table table-bordered">
 	<thead>
 		<tr>
 			<th>No.</th>
@@ -57,24 +50,26 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="6">
+			<td colspan="8">
 					<form id="searchForm">
-						<input type="text" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
-						<input type="text" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-						<input type="text" name="page" />
+						<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
+						<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
+						<input type="hidden" name="page" />
 					</form>
-					<div id="searchUI">
-						<select name="searchType">
+					<div id="searchUI" class="form-inline d-flex justify-content-center">
+						<select name="searchType" class="form-control mr-2">
 							<option value>전체</option>
 							<option value="name">이름</option>
 							<option value="address">지역</option>
 						</select>
-						<input type="text" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-						<input id="searchBtn" type="button" value="검색" />
+						<input type="text" name="searchWord" class="form-control" 
+							value="${pagingVO.simpleSearch.searchWord }"/>
+						<input id="searchBtn" type="button" 
+							class="ml-2 btn btn-primary" value="검색" />
 					</div>
-				<div id="pagingArea">
-					${pagingVO.pagingHTML }
-				</div>
+					<div id="pagingArea" class="d-flex justify-content-center">
+						${pagingVO.pagingHTMLBS }
+					</div>
 			</td>
 		</tr> 
 	</tfoot>
@@ -103,15 +98,4 @@
 		return false;
 	});
 </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
 

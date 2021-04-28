@@ -28,7 +28,7 @@ public class BoardNumberingController {
 	@ResponseBody
 	public Map<String, Object> recommend(
 		@RequestParam(required=true) int what	
-		, @PathVariable String numeringType
+		, @PathVariable(required = true) String numeringType
 	) {
 		ServiceResult result = null;
 		if("recommend".equals(numeringType)) {

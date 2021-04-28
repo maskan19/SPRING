@@ -1,17 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>	
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp" />
-</head>
-<body>
-	<h4>${member.mem_name }님의 마이페이지
-	</h4>
-	<table>
+	<h4>${member.mem_name }님의 마이페이지</h4>
+	<table class="table table-bordered">
 		<tr>
 			<th>회원아이디</th>
 			<td>${member.mem_id }</td>
@@ -19,7 +9,7 @@
 		<tr>
 			<th>프로필</th>
 			<td>
-				<img src="data:image/*;base64,${member.base64Image }">
+				<img class="w-3 h-3" src="data:image/*;base64,${member.base64Image }">
 			</td>
 		</tr>
 		<tr>
@@ -92,14 +82,17 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="button" value="수정" class="controlBtn" id="updateBtn">
-				<button type="button" class="controlBtn" id="deleteBtn">탈퇴</button>
+				<input type="button" value="수정" 
+					class="controlBtn btn btn-primary" 
+					id="updateBtn">
+				<button type="button" class="controlBtn btn btn-danger" 
+				id="deleteBtn">탈퇴</button>
 			</td>
 		</tr>
 		<tr>	
 			<th>구매목록</th>
 			<td>
-				<table>
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>상품코드</th>
@@ -159,23 +152,6 @@
 			}
 		});
 	</script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

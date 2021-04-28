@@ -5,34 +5,44 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URLDecoder;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.ddit.mvc.annotation.Controller;
-import kr.or.ddit.mvc.annotation.RequestMapping;
-import kr.or.ddit.mvc.annotation.RequestMethod;
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
-import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
 
-//@WebServlet("/02/imageForm.do")
+import kr.or.ddit.exception.BadRequestException;
+
 @Controller
-public class Model2ImageFormServlet{
+public class Model2ImageFormServlet implements ApplicationContextAware{
 	private ServletContext application;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.application = 
+				((WebApplicationContext) applicationContext).getServletContext();
+	}
+	
+	@Value("#{appInfo.contentFolder}")
+	private File contents;
 	
 	@RequestMapping(value="/02/imageForm.do", method=RequestMethod.POST)
 	public String upload(
 			@RequestPart("uploadImage") MultipartFile image
 			) throws IOException {
 		if(!image.isEmpty()) {
-			String folder = application.getInitParameter("contentFolder"); 			 
-			File contents = new File(folder);
 			String contentType = application.getMimeType(image.getOriginalFilename());
 			if(contentType==null || 
 					!contentType.startsWith("image/")) {
@@ -45,11 +55,11 @@ public class Model2ImageFormServlet{
 	}
 	
 	@RequestMapping("/02/imageForm.do")
-	public String doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		if(application==null)
-			application = req.getServletContext();
-		String folder = application.getInitParameter("contentFolder"); 			 
-		File contents = new File(folder);
+	public String doGet(
+			@CookieValue(name="imageCookie", required = false) String imageCookieValue
+			, Model model
+			, HttpServletResponse resp) throws ServletException, IOException {
+		
 		String[] children = contents.list(new FilenameFilter() {
 			
 			@Override
@@ -59,23 +69,13 @@ public class Model2ImageFormServlet{
 			}
 		});
 		
-		Cookie[] cookies = req.getCookies();
-		Cookie imageCookie = null;
-		if(cookies!=null) {
-			for(Cookie tmp : cookies) {
-				if(tmp.getName().equals("imageCookie")) {
-					imageCookie = tmp;
-					break;
-				}
-			}
-		}
-		if(imageCookie!=null) {
-			String decodedJson = URLDecoder.decode( imageCookie.getValue() , "UTF-8");
-			req.setAttribute("imageCookie", decodedJson);
+		if(StringUtils.isNotBlank(imageCookieValue)) {
+			String decodedJson = URLDecoder.decode(imageCookieValue, "UTF-8");
+			model.addAttribute("imageCookie", decodedJson);
 		}
 		
 		
-		req.setAttribute("children", children);
+		model.addAttribute("children", children);
 		String view = "imageForm";
 		return view;
 	}

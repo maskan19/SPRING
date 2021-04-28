@@ -2,30 +2,31 @@ package kr.or.ddit.member.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.or.ddit.member.service.IMemberService;
-import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.mvc.annotation.Controller;
-import kr.or.ddit.mvc.annotation.RequestMapping;
-import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
-import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.SearchVO;
 
 @Controller
 public class MemberListController{
-	private IMemberService service =
-			new MemberServiceImpl();
+	@Inject
+	private IMemberService service;
 	
 	@RequestMapping("/member/memberView.do")
 	public String view(
 		@RequestParam("who") String who
-		, HttpServletRequest req
+		, Model model
 	) {
 		MemberVO member = service.retrieveMember(who);
-		req.setAttribute("member", member);
+		model.addAttribute("member", member);
 		return "member/mypage";
 	}
 	
@@ -33,9 +34,9 @@ public class MemberListController{
 	public String memberList(
 			@ModelAttribute("searchVO") SearchVO searchVO
 			, @RequestParam(value="page", required=false, defaultValue="1") int currentPage
-			, HttpServletRequest req){
+			, Model model){
 		
-		PagingVO<MemberVO> pagingVO = new PagingVO(7, 2);
+		PagingVO<MemberVO> pagingVO = new PagingVO<>(7, 2);
 		pagingVO.setCurrentPage(currentPage);
 		// 검색 조건
 		pagingVO.setSimpleSearch(searchVO);
@@ -47,7 +48,7 @@ public class MemberListController{
 				service.retrieveMemberList(pagingVO);
 		pagingVO.setDataList(memberList);
 		
-		req.setAttribute("pagingVO", pagingVO);
+		model.addAttribute("pagingVO", pagingVO);
 		
 		return "member/memberList";
 	}

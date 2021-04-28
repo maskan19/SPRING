@@ -50,7 +50,7 @@
 				);
 			}
 			listBody.html(trTags);
-			pagingArea.html( resp.pagingHTML );
+			pagingArea.html( resp.pagingHTMLBS );
 		}, error:function(xhr, resp, error){
 			console.log(xhr);
 		}

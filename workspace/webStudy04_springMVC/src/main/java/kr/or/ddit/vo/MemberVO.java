@@ -1,5 +1,6 @@
 package kr.or.ddit.vo;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Base64;
 import java.util.Set;
@@ -11,7 +12,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.or.ddit.Constants;
+import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.validator.constraint.TelephoneNumber;
@@ -93,6 +97,22 @@ public class MemberVO implements Serializable, HttpSessionBindingListener{
 	private String mem_role;	
 	
 	private transient byte[] mem_img;
+	
+	//==============프로필 이미지 중복 처리====================
+	private MultipartFile mem_image;
+	
+	public void setMem_image(MultipartFile mem_image) throws IOException {
+		this.mem_image = mem_image;
+		if(mem_image !=null && !mem_image.isEmpty()) {
+			String mime = mem_image.getContentType();
+			if(!mime.startsWith("image/")) {
+				throw new BadRequestException("이미지 이외의 프로필은 처리 불가.");
+			}
+			this.mem_img = mem_image.getBytes();
+		}
+	}
+	//====================================================
+	
 	
 	public String getBase64Image() {
 		String encoded = null;

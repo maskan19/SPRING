@@ -31,9 +31,10 @@ import kr.or.ddit.vo.AttatchVO;
 public class BoardFileController {
 //	private IAttatchService service = AttatchServiceImpl.getInstance();
 	private IBoardService service = BoardServiceImpl.getInstance();
-	
+
 	@RequestMapping("/board/download.do")
-	public String download(@RequestParam(value="what", required=true) int att_no, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public String download(@RequestParam(value = "what", required = true) int att_no, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
 		AttatchVO attatch = service.download(att_no);
 		File saveFolder = new File("d:/attatches");
 		File downloadFile = new File(saveFolder, attatch.getAtt_savename());
@@ -43,37 +44,35 @@ public class BoardFileController {
 //		공백이 들어가면 토큰 역할을 해서 파일 명이 잘린다.
 		String agent = req.getHeader("User-Agent");
 		String filename = attatch.getAtt_filename();
-		if(StringUtils.containsIgnoreCase(agent, "trident")) {
+		if (StringUtils.containsIgnoreCase(agent, "trident")) {
 			// 파일 네임을 인코딩 작업
 			filename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", " ");
-		}else {
+		} else {
 			byte[] bytes = filename.getBytes();
 			filename = new String(bytes, "ISO-8859-1");
 		}
-		resp.setHeader("Content-Disposition", "attatchment;filename=\""+filename+"\"");
-		resp.setHeader("Content-Length", attatch.getAtt_size()+"");
+		resp.setHeader("Content-Disposition", "attatchment;filename=\"" + filename + "\"");
+		resp.setHeader("Content-Length", attatch.getAtt_size() + "");
 		resp.setContentType("application/octet-stream");
-		try(
-			OutputStream os = resp.getOutputStream();	
-		){
+		try (OutputStream os = resp.getOutputStream();) {
 			FileUtils.copyFile(downloadFile, os);
 		}
 		return null;
 	}
-	
-	
+
 	@RequestMapping(value = "/board/boardImage.do", method = RequestMethod.POST)
 	public String imageUpload(@RequestPart("upload") MultipartFile upload, HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		String saveFolderURL = "/boardImages";
 		String saveFolderPath = req.getServletContext().getRealPath(saveFolderURL);
 		File saveFolder = new File(saveFolderPath);
-		if(!saveFolder.exists()) saveFolder.mkdirs();
+		if (!saveFolder.exists())
+			saveFolder.mkdirs();
 		Map<String, Object> resultMap = new HashMap<>();
 		if (!upload.isEmpty()) {
-			
+
 			upload.saveTo(saveFolder);
-			
+
 			int uploaded = 1;
 			String fileName = upload.getOriginalFilename();
 			String saveName = upload.getUniqueSaveName();

@@ -9,8 +9,8 @@
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<form id="searchForm">
-	<select name="prod_lgu">
+<form id="searchForm" class="form-inline d-flex justify-content-center">
+	<select name="prod_lgu" class="form-control mr-3">
 		<option value>상품분류</option>
 		<c:forEach items="${lprodList }" var="lprod">
 			<option value="${lprod.lprod_gu }">
@@ -18,7 +18,7 @@
 			</option>
 		</c:forEach>
 	</select>
-	<select name="prod_buyer">
+	<select name="prod_buyer" class="form-control mr-3">
 		<option value>거래처선택</option>
 		<c:forEach items="${buyerList }" var="buyer">
 			<option class="${buyer.buyer_lgu }" value="${buyer.buyer_id }">
@@ -26,12 +26,12 @@
 			</option>
 		</c:forEach>
 	</select>
-	<input type="text" name="prod_name" />
-	<input type="text" name="page" />
-	<input type="submit" value="검색" />
-	<input type="button" value="신규등록" id="newBtn"/>
+	<input type="text" name="prod_name"  class="form-control mr-2"/>
+	<input type="hidden" name="page" />
+	<input type="submit" value="검색" class="btn btn-primary mr-2"/>
+	<input type="button" value="신규등록" id="newBtn" class="btn btn-success"/>
 </form>
-<table>
+<table class="table table-bordered table-hover mt-3">
 	<thead>
 		<tr>
 			<th>No.</th>
@@ -49,8 +49,9 @@
 	</tbody>
 <tfoot>
 	<tr>
-		<td colspan="8" id="pagingArea">
-			
+		<td colspan="8">
+			<div class="d-flex justify-content-center" id="pagingArea">
+			</div>
 		</td>
 	</tr>
 </tfoot>
