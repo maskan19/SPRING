@@ -23,69 +23,41 @@ import kr.or.ddit.vo.ProdVO;
 
 @Controller
 @RequestMapping("/prod/prodInsert.do")
-public class ProdInsertController{
+public class ProdInsertController {
 	@Inject
 	private IProdService service;
-	@Inject
-	private IOthersDAO othersDAO;
-	
-	private void addAttribute(Model model) {
-		List<Map<String, Object>> lprodList 
-			= othersDAO.selectLprodList();
-		List<BuyerVO> buyerList 
-			= othersDAO.selectBuyerList(null);
-		model.addAttribute("lprodList", lprodList);
-		model.addAttribute("buyerList", buyerList);
-	}
-	
+
 	@RequestMapping
-	public String form(Model model){
-		addAttribute(model);
+	public String form(Model model) {
 		return "prod/prodForm";
 	}
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public String process(
-		@Validated(InsertGroup.class) @ModelAttribute("prod") ProdVO prod
-		, Errors errors
-		, Model model
-	) throws IOException{
-		addAttribute(model);
-		
+
+	@RequestMapping(method = RequestMethod.POST)
+	public String process(@Validated(InsertGroup.class) @ModelAttribute("prod") ProdVO prod, Errors errors, Model model)
+			throws IOException {
+
 //		if(!prod_image.isEmpty()) {
 //			prod_image.saveTo(saveFolder);
 //			prod.setProd_img(prod_image.getUniqueSaveName());
 //		}
-		
+
 		String view = null;
 		String message = null;
-		if(!errors.hasErrors()) {
+		if (!errors.hasErrors()) {
 			ServiceResult result = service.createProd(prod);
-			if(ServiceResult.OK.equals(result)) {
-				view = "redirect:/prod/prodView.do?what="+prod.getProd_id();
-			}else {
+			if (ServiceResult.OK.equals(result)) {
+				view = "redirect:/prod/prodView.do?what=" + prod.getProd_id();
+			} else {
 				message = "서버 오류";
 				view = "prod/prodForm";
 			}
-		}else {
+		} else {
 			view = "prod/prodForm";
 		}
-		
+
 		model.addAttribute("message", message);
-		
+
 		return view;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

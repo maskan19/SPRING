@@ -1,14 +1,29 @@
 package kr.or.ddit.board.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import javax.inject.Inject;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
 
 import kr.or.ddit.vo.BoardVO;
 
+//junit과 스프링 연동하기 위한 런타임
+//pom.xml수정
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("file:webapp/WEB-INF/spring/*-context.xml")
+@WebAppConfiguration /* 웹용 */
 public class IBoardDAOTest {
 
-	private IBoardDAO dao = new BoardDAOImpl();
+	@Inject
+	private IBoardDAO dao;
+	@Inject
+	private WebApplicationContext container;
 	
 	@Test
 	public void testSelectBoard() {

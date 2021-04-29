@@ -2,12 +2,21 @@ package kr.or.ddit.prod.dao;
 
 import static org.junit.Assert.*;
 
+import javax.inject.Inject;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+import kr.or.ddit.TestWebAppConfiguration;
 import kr.or.ddit.vo.ProdVO;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestWebAppConfiguration
 public class ProdDAOImplTest {
-	private IProdDAO dao = ProdDAOImpl.getInstance();
+	@Inject
+	private IProdDAO dao;
 
 	@Test
 	public void testSelectProd() {
