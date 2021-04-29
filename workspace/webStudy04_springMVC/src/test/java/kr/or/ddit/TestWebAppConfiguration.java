@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -19,5 +20,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 	@ContextConfiguration("file:webapp/WEB-INF/spring/appServlet/servlet-context.xml") /* 하위 컨테이너가 필요하다. */
 })
 @WebAppConfiguration
+@Transactional
 public @interface TestWebAppConfiguration {
 }
