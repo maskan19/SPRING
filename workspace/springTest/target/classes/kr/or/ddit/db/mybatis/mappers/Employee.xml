@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.employee.dao.IEmployeeDAO">
+
+
+
+	<sql id="searchFrag">
+		<trim prefix="WHERE" > 
+			<if test="simpleSearch!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.searchWord)">
+				<choose>
+					<when test="simpleSearch.searchType eq 'id'">
+						INSTR(EMPLOYEE_ID, #{simpleSearch.searchWord}) > 0
+					</when>
+					<when test="simpleSearch.searchType eq 'phone'">
+						INSTR(EMPLOYEE_PHONE, #{simpleSearch.searchWord}) > 0
+					</when>
+					<when test="simpleSearch.searchType eq 'name'">
+						INSTR(EMPLOYEE_NAME, #{simpleSearch.searchWord}) > 0
+					</when>
+					<when test="simpleSearch.searchType eq 'email'">
+						INSTR(EMPLOYEE_EMAIL, #{simpleSearch.searchWord}) > 0
+					</when>
+				</choose>
+			</if>
+		</trim>
+	</sql>
+
+
+
+
+
+
+
+
+	<select id="selectEmpForAuth" parameterType="string" resultType="EmployeeVO">
+		SELECT
+		    employee_id,
+		    employee_authority,
+		    employee_picture,
+		    employee_pwd,
+		    employee_name,
+		    employee_phone,
+		    employee_email
+		FROM
+		    employee
+		WHERE employee_id = #{employee_id}  AND employee_authority != 'ROLE_BAN'
+	</select>
+	
+	<insert id="insertEmp" parameterType="EmployeeVO" >
+			
+		INSERT INTO employee (
+		    employee_id,
+		    employee_authority,
+		    employee_picture,
+		    employee_pwd,
+		    employee_name,
+		    employee_phone,
+		    employee_email
+		) VALUES (
+		   #{employee_id, jdbcType=VARCHAR},
+		 'ROLE_USER' ,
+		   #{employee_picture, jdbcType=VARCHAR},
+		   #{employee_pwd, jdbcType=VARCHAR},
+		   #{employee_name, jdbcType=VARCHAR},
+		   #{employee_phone, jdbcType=VARCHAR},
+		   #{employee_email, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="selectEmpCount" parameterType="PagingVO" resultType="int">
+		SELECT COUNT(*)
+		FROM employee
+		<include refid="searchFrag" />
+	</select>
+	
+	<select id="selectEmpList" parameterType="PagingVO" resultType="EmployeeVO">
+		
+	 SELECT B.*
+			FROM (
+				SELECT A.*, ROWNUM RNUM
+				FROM(
+					SELECT ROWID RID,   employee_id,
+			    employee_authority,
+			    employee_picture,
+			    employee_pwd,
+			    employee_name,
+			    employee_phone,
+			    employee_email
+			FROM
+			    employee
+			    <include refid="searchFrag" />
+					ORDER BY RID DESC
+				) A   
+			) B  
+	
+	</select>
+	
+	<select id="selectEmp" parameterType="EmployeeVO">
+	</select>
+	
+	<update id="updateEmp" parameterType="EmployeeVO">
+	</update>
+	
+	<delete id="deleteEmp" parameterType="EmployeeVO">
+	</delete>
+	
+	<update id="bannedEmp" parameterType="EmployeeVO">
+	
+	</update>
+	
+	
+	
+
+</mapper>

@@ -19,7 +19,7 @@ public class RealMemberDeleteJob {
 	private IMemberDAO dao;
 
 //	@Scheduled(cron = "0 0 3 ? * MON")//매주 월요일 새벽세시
-	@Scheduled(cron = "*/5 * * * * *")
+	@Scheduled(cron = "* * * * * MON")
 	public void realDelete() {
 		Map<String, Object> pMap = new HashMap<>();
 		
